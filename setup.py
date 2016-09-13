@@ -12,7 +12,7 @@ with open('groundwork_web/version.py', 'rb') as f:
         f.read().decode('utf-8')).group(1)))
 
 setup(
-    name='groundwork web',
+    name='groundwork-web',
     version=version,
     url='http://groundwork web.readthedocs.org',
     license='MIT license',
@@ -23,7 +23,7 @@ setup(
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     include_package_data=True,
     platforms='any',
-    setup_requires=['pytest-runner', 'sphinx'],
+    setup_requires=['groundwork', 'pytest-runner', 'sphinx'],
     tests_require=['pytest', 'pytest-flake8'],
     install_requires=[],
     classifiers=[
