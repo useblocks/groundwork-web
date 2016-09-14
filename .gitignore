@@ -58,3 +58,5 @@ docs/_themes
 
 # PyBuilder
 target/
+
+.idea

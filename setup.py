@@ -23,7 +23,7 @@ setup(
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     include_package_data=True,
     platforms='any',
-    setup_requires=['groundwork', 'pytest-runner', 'sphinx'],
+    setup_requires=['groundwork', 'flask', 'pytest-runner', 'sphinx'],
     tests_require=['pytest', 'pytest-flake8'],
     install_requires=[],
     classifiers=[
@@ -40,8 +40,8 @@ setup(
     entry_points={
         'console_scripts': ["groundwork_web = "
                             "groundwork_web.applications.groundwork_web_app:start_app"],
-        'groundwork.plugin': ["groundwork_web_plugin = "
-                              "groundwork_web.plugins.groundwork_web_plugin:"
-                              "groundwork_web_plugin"],
+        'groundwork.plugin': ["groundwork_web_flask_plugin = "
+                              "groundwork_web.plugins.gw_web_flask.gw_web_flask:"
+                              "GwWebFlask"],
     }
 )
