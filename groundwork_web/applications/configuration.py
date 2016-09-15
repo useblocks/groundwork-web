@@ -6,5 +6,6 @@ APP_PATH = os.path.dirname(__file__)
 
 PLUGINS = [
     "GwPluginsInfo",
+    "GwWeb",
     "GwWebFlask"
 ]

@@ -1,12 +1,25 @@
-class ServerManagerPlugin:
+from groundwork.util import gw_get
+
+
+class ServerManagerPlugin():
 
     def __init__(self, plugin):
         self.plugin = plugin
         self.log = plugin.log
         self.app = plugin.app
 
-    def register(self, name, description):
-        return self.app.web.server.register(name, description, self.plugin)
+    def register(self, name, function, description):
+        return self.app.web.servers.register(name, function, description, self.plugin)
+
+    def get(self, name=None):
+        """
+        Returns servers, which can be filtered by name.
+
+        :param name: name of the server
+        :type name: str
+        :return: None, single server or dict of servers
+        """
+        return self.app.web.servers.get(name, self.plugin)
 
 
 class ServerManagerApplication:
@@ -14,14 +27,25 @@ class ServerManagerApplication:
         self._servers = {}
         self.app = app
 
-    def register(self, name, description, plugin):
+    def register(self, name, function, description, plugin):
         if name not in self._servers.keys():
-            self._servers[name] = Server(name, description, plugin)
+            self._servers[name] = Server(name, function, description, plugin)
+
+    def get(self, name=None, plugin=None):
+        """
+        Returns servers, which can be filtered by name or plugin.
+
+        :param name: name of the server
+        :type name: str
+        :param plugin: plugin name, which registers the servers
+        :return: None, single server or dict of servers
+        """
+        return gw_get(self._servers, name, plugin)
 
 
-class Server:
-    def __init__(self, name, start, description, plugin):
+class Server():
+    def __init__(self, name, function, description, plugin):
         self.name = name
-        self.start = start
+        self.function = function
         self.description = description
         self.plugin = plugin
