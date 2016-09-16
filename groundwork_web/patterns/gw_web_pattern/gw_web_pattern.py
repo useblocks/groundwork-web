@@ -5,6 +5,7 @@ from groundwork_web.patterns.gw_web_pattern.provider import ProviderManagerAppli
 from groundwork_web.patterns.gw_web_pattern.server import ServerManagerApplication, ServerManagerPlugin
 from groundwork_web.patterns.gw_web_pattern.context import ContextManagerApplication, ContextManagerPlugin
 from groundwork_web.patterns.gw_web_pattern.route import RouteManagerApplication, RouteManagerPlugin
+from groundwork_web.patterns.gw_web_pattern.menu import MenuApplication, MenuPlugin
 
 
 class GwWebPattern(GwBasePattern):
@@ -28,6 +29,7 @@ class WebPlugin:
         self.servers = ServerManagerPlugin(plugin)
         self.contexts = ContextManagerPlugin(plugin)
         self.routes = RouteManagerPlugin(plugin)
+        self.menus = MenuPlugin(plugin)
 
 
 class WebApplication:
@@ -38,5 +40,6 @@ class WebApplication:
         self.servers = ServerManagerApplication(app)
         self.contexts = ContextManagerApplication(app)
         self.routes = RouteManagerApplication(app)
+        self.menus = MenuApplication(app)
 
 

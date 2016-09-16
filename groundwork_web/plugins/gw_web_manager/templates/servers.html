@@ -1,0 +1,15 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+<h1>Servers list</h1>
+
+{% for name, server in servers.items() %}
+<h2>{{ server.name }}</h2>
+<p>{{ server.description }}</p>
+
+plugin: {{ server.plugin.name }}
+
+{% endfor %}
+
+{% endblock %}

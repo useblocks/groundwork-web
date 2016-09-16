@@ -1,0 +1,18 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+<h1>Contexts list</h1>
+
+{% for name, context in contexts.items() %}
+<h2>{{ context.name }}</h2>
+<p>{{ context.description }}</p>
+
+template folder: {{ context.template_folder}} <br>
+static folder: {{ context.static_folder}} <br>
+url prefix: {{ context.url_prefix}} <br>
+plugin: {{ context.plugin.name }}
+
+{% endfor %}
+
+{% endblock %}

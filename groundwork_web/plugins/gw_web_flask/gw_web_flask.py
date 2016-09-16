@@ -13,6 +13,18 @@ class GwWebFlask(GwWebPattern, GwCommandsPattern):
 
     def activate(self):
         self.flask_app = Flask(__name__)
+
+        # Inject send_signal() to jinja templates
+        # Use it like {{ send_signal("my_signal") }}
+        self.flask_app.jinja_env.globals.update(send_signal=self.signals.send)
+
+        self.flask_app.jinja_env.globals.update(get_menu=self.__get_menu)
+
+        self.flask_app.jinja_env.globals.update(get_config=self.app.config.get)
+
+        # self.signals.register("web_menu", "signal to retrieve entries for the web menu")
+        # self.signals.connect("test", "test_web", blub, description="test web signal")
+
         self.web.providers.register("flask", FlaskProvider(self.flask_app), "Flask web provider")
         self.web.servers.register("flask_debug", self.__start_flask_debug_server, "Starts the flask debug server")
 
@@ -21,6 +33,9 @@ class GwWebFlask(GwWebPattern, GwCommandsPattern):
 
     def __start_flask_debug_server(self):
         self.flask_app.run()
+
+    def __get_menu(self, cluster="base"):
+        return self.web.menus.get(cluster=cluster)
 
 
 class FlaskProvider(BaseProvider):
@@ -53,3 +68,4 @@ class FlaskProvider(BaseProvider):
 
     def render(self, template, **kwargs):
         return render_template(template, **kwargs)
+

@@ -1,0 +1,23 @@
+{%  macro print_menu(menu) -%}
+    <ul>
+        <li>{{ menu.name }} ({{ menu.link }})</li>
+        {% for sub_menu_name, sub_menu in menu.sub_menus.items() -%}
+        {{ print_menu(sub_menu) }}
+        {%- endfor %}
+    </ul>
+{%- endmacro %}
+
+{% extends "master.html" %}
+
+{% block content %}
+
+<h1>Menus list</h1>
+
+{% for cluster_name, cluster in menus.items() %}
+<h2>{{ cluster_name }}</h2>
+    {% for menu_name, menu in cluster.items() %}
+        {{ print_menu(menu) }}
+    {% endfor %}
+{% endfor %}
+
+{% endblock %}
