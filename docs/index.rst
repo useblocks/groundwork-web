@@ -24,3 +24,8 @@ Welcome to groundwork web
 =========================
 
 groundwork-web provides web app management functions to applications based on the framework `groundwork`_.
+
+.. toctree::
+   :maxdepth: 2
+
+   architecture

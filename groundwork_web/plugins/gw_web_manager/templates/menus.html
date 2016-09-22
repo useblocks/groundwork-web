@@ -7,11 +7,55 @@
     </ul>
 {%- endmacro %}
 
+{%  macro print_menu_tr(menu, cluster_name) -%}
+    <ul>
+        <tr>
+            <td>{{menu.name}}</td>
+            <td>{{cluster_name}}</td>
+            <td><a href="{{ menu.link}}">{{ menu.link }}</a></td>
+            <td>{{menu.icon}}</td>
+            <td>{{menu.plugin.name }}</td>
+            <td>{{menu.description}}</td>
+        </tr>
+        {% for sub_menu_name, sub_menu in menu.sub_menus.items() -%}
+        {{ print_menu_tr(sub_menu, cluster_name) }}
+        {%- endfor %}
+    </ul>
+{%- endmacro %}
+
 {% extends "master.html" %}
 
 {% block content %}
+<h1>Menu list</h1>
 
-<h1>Menus list</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Cluster</th>
+            <th>Link</th>
+            <th>Icon</th>
+            <th>Plugin</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+
+{% for cluster_name, cluster in menus.items() %}
+    {% for name, menu in cluster.items() %}
+        {{ print_menu_tr(menu, cluster_name) }}
+{#        <tr>#}
+{#            <td>{{menu.name}}</td>#}
+{#            <td>{{cluster_name}}</td>#}
+{#            <td><a href="{{ menu.link}}">{{ menu.link }}</a></td>#}
+{#            <td>{{menu.icon}}</td>#}
+{#            <td>{{menu.plugin.name }}</td>#}
+{#            <td>{{menu.description}}</td>#}
+{#        </tr>#}
+    {% endfor %}
+{% endfor %}
+</table>
+
+<h1>Menu structure</h1>
 
 {% for cluster_name, cluster in menus.items() %}
 <h2>{{ cluster_name }}</h2>

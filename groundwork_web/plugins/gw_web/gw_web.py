@@ -9,7 +9,7 @@ from groundwork_web.patterns import GwWebPattern
 
 class GwWeb(GwWebPattern, GwCommandsPattern):
     def __init__(self, *args, **kwargs):
-        self.name = self.__class__.__name__
+        self.name = kwargs.get("name", self.__class__.__name__)
         super().__init__(*args, **kwargs)
 
     def activate(self):

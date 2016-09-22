@@ -1,0 +1,29 @@
+digraph foo {
+      bgcolor="transparent";
+      rankdir=TB;
+
+
+      ## Patterns
+      node [shape=rect, color="#333333", style=filled, fontname="lato", fontsize=16, fontcolor="#ffcc00"];
+      GwWebPattern;
+
+      ## Plugin
+      node [shape=rect,  color="#dddddd", style=filled, fontname="lato", fontsize=16, fontcolor="#333333"];
+      GwWeb; GwWebManager; GwWebFlask;
+
+      ## App
+      node [shape=rect, color="#ffcc00", style=filled, fontname="lato", fontsize=16, fontcolor="#333"];
+      GroundworkWebApp;
+
+      ## Connections
+      edge [color="#ffffff", style=solid]
+
+      GwWebPattern -> GwWeb
+      GwWebPattern -> GwWebManager
+      GwWebPattern -> GwWebFlask
+
+      GwWeb -> GroundworkWebApp
+      GwWebManager -> GroundworkWebApp
+      GwWebFlask -> GroundworkWebApp
+
+   }

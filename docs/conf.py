@@ -32,6 +32,8 @@ sys.path.append(os.path.abspath('_themes'))
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.graphviz',
+    'sphinx.ext.inheritance_diagram',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -385,3 +387,14 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #
 # texinfo_no_detailmenu = False
+
+graphviz_dot = 'dot'
+graphviz_dot_args = ['-Tsvg']
+graphviz_output_format = 'svg'
+
+inheritance_graph_attrs = dict(rankdir="TB", fontsize=16, ratio='compress', bgcolor="transparent")
+
+# "#333333" for colors doesn't work. "#" seems to make trouble during doc generation.
+# Use color-names instead: http://www.graphviz.org/doc/info/colors.html
+inheritance_node_attrs = dict(shape="rect", color="gray20", style="filled", fontname="lato", fontsize=16,
+                              fontcolor="darkgoldenrod1")

@@ -7,6 +7,7 @@ class ProviderManagerPlugin:
         self.plugin = plugin
         self.log = plugin.log
         self.app = plugin.app
+        self.default = plugin.app.web.providers.default
 
     def register(self, name, instance, description):
         return self.app.web.providers.register(name, instance, description, self.plugin)
@@ -19,7 +20,7 @@ class ProviderManagerApplication:
     def __init__(self, app):
         self._providers = {}
         self.app = app
-        self._default_provider = None
+        self.default = None
 
     def register(self, name, instance, description, plugin):
         if name not in self._providers.keys():
@@ -27,14 +28,14 @@ class ProviderManagerApplication:
             self._load_context(self._providers[name])
             self._load_routes(self._providers[name])
 
-        if name == self.app.config.get("DEFAULT_PROVIDER", None) or self._default_provider is None:
-            self._default_provider = self._providers[name]
+        if name == self.app.config.get("DEFAULT_PROVIDER", None) or self.default is None:
+            self.default = self._providers[name]
 
     def render(self, template, provider=None, **kwargs):
-        if self._default_provider is None:
+        if self.default is None:
             raise RuntimeError("No default provider is set")
         if provider is None:
-            return self._default_provider.instance.render(template, **kwargs)
+            return self.default.instance.render(template, **kwargs)
         if provider not in self._providers.keys():
             raise NameError("Provider %s does not exist" % provider)
 
@@ -43,7 +44,7 @@ class ProviderManagerApplication:
     def set_default_provider(self, name):
         if name not in self._providers.keys():
             raise NameError("Provider %s does not exist" % name)
-        self._default_provider = self._providers[name]
+        self.default = self._providers[name]
 
     def get(self, name=None, plugin=None):
         return gw_get(self._providers, name, plugin)
@@ -76,6 +77,7 @@ class Provider:
 class BaseProvider:
     def __init__(self, instance=None):
         self.instance = instance
+        self.request = None
 
     def register_route(self, url, methods, endpoint, context, *arg, **kwargs):
         pass
@@ -91,4 +93,6 @@ class BaseProvider:
 
     def render(self, template, **kwargs):
         pass
+
+
 

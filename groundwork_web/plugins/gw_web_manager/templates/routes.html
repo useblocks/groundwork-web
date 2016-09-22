@@ -1,0 +1,35 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+<h1>Route list</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>URL</th>
+            <th>Methods</th>
+            <th>Context</th>
+            <th>Plugin</th>
+            <th>Endpoint</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+
+{% for name, route in routes.items() %}
+    <tr>
+        <td>{{route.name}}</td>
+        <td><a href="{{ app.web.contexts.get(route.context).url_prefix or ""}}{{route.url}}">
+            {{ app.web.contexts.get(route.context).url_prefix or ""}}{{route.url}}
+        </a></td>
+        <td>{{route.methods}}</td>
+        <td>{{route.context}}</td>
+        <td>{{route.plugin.name }}</td>
+        <td>{{route.endpoint.__name__}}</td>
+        <td>{{route.description}}</td>
+    </tr>
+{% endfor %}
+</table>
+
+{% endblock %}

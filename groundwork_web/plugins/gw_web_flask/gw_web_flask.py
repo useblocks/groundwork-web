@@ -1,4 +1,6 @@
-from flask import Flask, render_template, Blueprint
+from docutils.core import publish_parts
+
+from flask import Flask, render_template, Blueprint, request
 from groundwork.patterns import GwCommandsPattern
 
 from groundwork_web.patterns import GwWebPattern
@@ -7,7 +9,7 @@ from groundwork_web.patterns.gw_web_pattern.provider import BaseProvider
 
 class GwWebFlask(GwWebPattern, GwCommandsPattern):
     def __init__(self, *args, **kwargs):
-        self.name = self.__class__.__name__
+        self.name = kwargs.get("name", self.__class__.__name__)
         super().__init__(*args, **kwargs)
         self.flask_app = None
 
@@ -21,6 +23,8 @@ class GwWebFlask(GwWebPattern, GwCommandsPattern):
         self.flask_app.jinja_env.globals.update(get_menu=self.__get_menu)
 
         self.flask_app.jinja_env.globals.update(get_config=self.app.config.get)
+
+        self.flask_app.jinja_env.globals.update(rst2html=self.__rst2html)
 
         # self.signals.register("web_menu", "signal to retrieve entries for the web menu")
         # self.signals.connect("test", "test_web", blub, description="test web signal")
@@ -37,11 +41,22 @@ class GwWebFlask(GwWebPattern, GwCommandsPattern):
     def __get_menu(self, cluster="base"):
         return self.web.menus.get(cluster=cluster)
 
+    def __rst2html(self, document, part="body"):
+        if document is not None and type(document) == str:
+            doc_rendered = publish_parts(document, writer_name="html")
+            if part not in doc_rendered.keys():
+                raise KeyError("%s is not a valid key for part parameter of rst2html.\nValid options: " %
+                               (part, ",".join(doc_rendered.keys())))
+
+            return doc_rendered[part]
+        return document
+
 
 class FlaskProvider(BaseProvider):
     def __init__(self, instance, *args, **kwargs):
         self.flask_app = instance
         self.blueprints = {}
+        self.request = request
 
     def register_route(self, url, methods, endpoint, context, *arg, **kwargs):
         if context not in self.blueprints.keys():

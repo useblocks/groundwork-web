@@ -8,7 +8,7 @@ def start_app():
 
 
 def register_app():
-    app = App([os.path.join(os.path.dirname(__file__), "configuration.py")])
+    app = App([os.path.join(os.path.dirname(__file__), "configuration.py")], strict=True)
     app.plugins.activate(app.config.PLUGINS)
     return app
 

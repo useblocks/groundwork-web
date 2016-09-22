@@ -1,0 +1,57 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+<h1>Plugin class {{ clazz.name }}</h1>
+<table class="table table-striped">
+    <tbody>
+        <tr>
+            <th>Name</th>
+            <td>{{clazz.name}}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ rst2html(clazz["clazz"].__doc__)|safe }}</td>
+        </tr>
+        <tr>
+            <th>Path</th>
+            <td>{{clazz.distribution.path}}</td>
+        </tr>
+        <tr>
+            <th>Entry point</th>
+            <td>{{clazz.entrypoint_name}}</td>
+        </tr>
+        <tr>
+            <th>Distribution</th>
+            <td>{{clazz.distribution.key}}</td>
+        </tr>
+        <tr>
+            <th>Version</th>
+            <td>{{clazz.distribution.version}}</td>
+        </tr>
+        <tr>
+            <th>Pattern Inheritance (Python MRO)</th>
+            <td>
+                <ol>
+                {% for mro in clazz['clazz'].__mro__ %}
+                    <li>{{ mro.__name__ }}</li>
+                {% endfor %}
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <th>Instantiation</th>
+            <td>
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="name">Plugin instance name</label>
+                        <input name="name" type="text" class="form-control" id="name" placeholder="Name">
+                        <button type="submit" class="btn btn-default">Create</button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+{% endblock %}

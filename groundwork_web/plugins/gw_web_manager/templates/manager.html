@@ -1,0 +1,154 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+<h1>Web manager</h1>
+<p>
+    The web manager gives access to nearly every object and function in groundwork via a web interface.
+</p>
+
+<h2>Groundwork Base System</h2>
+<div class="row">
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3>Plugins</h3>
+                <p>Get a list of all used or available plugins. Activate or deactivate them. See detailed
+                    information about their usage, their configuration and their locations on the server hard disk.</p>
+                <p><a  href="{{ url_for(".__plugin_view") }}" class="btn btn-primary btn-block"
+                       role="button">Plugins</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3>Signals</h3>
+                <p>...</p>
+                <p><a href="#" class="btn btn-primary" role="button">Signals</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3>Receivers</h3>
+                <p>...</p>
+                <p><a href="#" class="btn btn-primary" role="button">Receivers</a></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3>Commands</h3>
+                <p>...</p>
+                <p><a href="#" class="btn btn-primary" role="button">Commands</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3>Shared objects</h3>
+                <p>...</p>
+                <p><a href="#" class="btn btn-primary" role="button">Shared objects</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3>Documents</h3>
+                <p>...</p>
+                <p><a href="#" class="btn btn-primary" role="button">Documents</a></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3>Recipes</h3>
+                <p>...</p>
+                <p><a href="#" class="btn btn-primary" role="button">Recipes</a></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<h2>Groundwork Web System</h2>
+<div class="row">
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3>Routes</h3>
+                <p>
+                    See a list off all available and active routes in the application
+                </p>
+                <p><a href="{{ url_for(".__route_view") }}" class="btn btn-primary btn-block" role="button">Routes</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3>Servers</h3>
+                <p>...</p>
+                <p><a href="{{ url_for(".__server_view") }}" class="btn btn-primary btn-block"
+                      role="button">Servers</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3>Provider</h3>
+                <p>...</p>
+                <p><a href="{{ url_for(".__provider_view") }}" class="btn btn-primary btn-block"
+                      role="button">Providers</a></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3>Context</h3>
+                <p>...</p>
+                <p><a href="{{ url_for(".__context_view") }}" class="btn btn-primary btn-block"
+                      role="button">Contexts</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3>Menu</h3>
+                <p>...</p>
+                <p><a href="{{ url_for(".__menu_view") }}" class="btn btn-primary btn-block"
+                      role="button">Menu entries</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

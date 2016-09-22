@@ -1,0 +1,54 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+<h1>Plugin list</h1>
+
+<h2>Plugin instances</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Plugin Class</th>
+            <th>Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for name, plugin in app.plugins.get().items() %}
+        <tr>
+            <td><a href="{{ url_for('.__plugin_detail_view', plugin=plugin.name) }}">{{plugin.name}}</a></td>
+    {#        <td><a href="{{ app.web.contexts.get(plugin.context).url_prefix or ""}}{{plugin.url}}">#}
+    {#            {{ app.web.contexts.get(plugin.context).url_prefix or ""}}{{plugin.url}}#}
+    {#        </a></td>#}
+            <td>{{plugin.__class__.__name__}}</td>
+            <td>{{plugin.active}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h2>Plugin classes</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Path</th>
+            <th>Distribution</th>
+            <th>Version</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for name, class in app.plugins.classes.get().items() %}
+        <tr>
+            <td><a href="{{ url_for('.__plugin_class_view', clazz=class.name) }}">{{class.name}}</a></td>
+            <td>{{class.distribution.path}}</td>
+            <td>{{class.distribution.key}}</td>
+            <td>{{class.distribution.version}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
