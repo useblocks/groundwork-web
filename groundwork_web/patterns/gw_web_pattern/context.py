@@ -25,8 +25,9 @@ class ContextManagerApplication:
             if name == self.app.config.get("DEFAULT_CONTEXT", None) or self.default_context is None:
                 self.default_context = self._contexts[name]
 
-        for name, provider in self.app.web.providers.get().items():
-            provider.register_context()
+        for provider_name, provider in self.app.web.providers.get().items():
+            provider.instance.register_context(name, template_folder, static_folder, url_prefix,
+                                               description=description, plugin=plugin)
 
     def get(self, name=None, plugin=None):
         return gw_get(self._contexts, name, plugin)

@@ -27,8 +27,8 @@ class RouteManagerApplication:
         if name not in self._routes.keys():
             self._routes[name] = Route(url, methods, endpoint, context, name, description, plugin)
 
-            for provider in self.app.web.providers.get():
-                provider.instance.register_route()
+            for name, provider in self.app.web.providers.get().items():
+                provider.instance.register_route(url, methods, endpoint, context)
 
     def get(self, name=None, plugin=None):
         return gw_get(self._routes, name, plugin)
