@@ -4,6 +4,10 @@ from groundwork_web.patterns import GwWebPattern
 
 
 class GwWebManager(GwWebPattern):
+    """
+    Provides functions and views to manage the application via a web interface.
+
+    """
     def __init__(self, *args, **kwargs):
         self.name = kwargs.get("name", self.__class__.__name__)
         super().__init__(*args, **kwargs)

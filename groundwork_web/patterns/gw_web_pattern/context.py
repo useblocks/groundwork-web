@@ -1,8 +1,10 @@
+import os
+import logging
+
 from groundwork.util import gw_get
 
 
 class ContextManagerPlugin:
-
     def __init__(self, plugin):
         self.plugin = plugin
         self.log = plugin.log
@@ -17,6 +19,7 @@ class ContextManagerApplication:
     def __init__(self, app):
         self._contexts = {}
         self.app = app
+        self.log = logging.getLogger(__name__)
         self.default_context = None
 
     def register(self, name, template_folder, static_folder, url_prefix, description, plugin):
@@ -24,10 +27,13 @@ class ContextManagerApplication:
             self._contexts[name] = Context(name, template_folder, static_folder, url_prefix, description, plugin)
             if name == self.app.config.get("DEFAULT_CONTEXT", None) or self.default_context is None:
                 self.default_context = self._contexts[name]
+            for provider_name, provider in self.app.web.providers.get().items():
+                provider.instance.register_context(name, template_folder, static_folder, url_prefix,
+                                                   description=description, plugin=plugin)
+        else:
+            self.log.warning("Context %s already registered by %s" % (name, self._contexts[name].plugin.name))
 
-        for provider_name, provider in self.app.web.providers.get().items():
-            provider.instance.register_context(name, template_folder, static_folder, url_prefix,
-                                               description=description, plugin=plugin)
+        return self._contexts[name]
 
     def get(self, name=None, plugin=None):
         return gw_get(self._contexts, name, plugin)
@@ -47,6 +53,7 @@ class Context:
 
     They are similar to flask blueprint concept.
     """
+
     def __init__(self, name, template_folder, static_folder, url_prefix, description, plugin):
         self.name = name
         self.template_folder = template_folder

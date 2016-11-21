@@ -22,6 +22,17 @@
             <td>{{plugin.active}}</td>
         </tr>
         <tr>
+            <th>Needed Plugins</th>
+            <td>
+                <ol>
+                    {%  for needed_plugin in plugin.needed_plugins -%}
+                        <li>{{ needed_plugin }}</li>
+                    {% endfor -%}
+                </ol>
+
+            </td>
+        </tr>
+        <tr>
             <th>De/Activation</th>
             <td>
                 <form method="POST">
