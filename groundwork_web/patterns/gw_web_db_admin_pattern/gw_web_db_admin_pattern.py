@@ -1,11 +1,11 @@
 import logging
 
 from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
 from groundwork_database.patterns import GwSqlPattern
 
 from groundwork_web.patterns import GwWebPattern
-from groundwork_web.patterns.gw_web_db_admin_pattern.exceptions import FlaskNotFoundException
 
 
 class GwWebDbAdminPattern(GwWebPattern, GwSqlPattern):
@@ -40,8 +40,8 @@ class WebDatabasePlugin:
                                     sender=self.plugin)
         self.log.debug("Pattern web database initialised")
 
-    def register(self):
-        pass
+    def register(self, db_clazz, db_session):
+        self.app.web.db.register(db_clazz, db_session)
 
     def unregister(self):
         pass
@@ -58,23 +58,17 @@ class WebDatabaseApplication:
     def __init__(self, app):
         self.app = app
         self.log = logging.getLogger(__name__)
+        self.flask_admin = None
 
-        self._flask_provider = None
-        self._flask_admin = None
-
-    def register(self):
+    def register(self, db_clazz, db_session):
         # We must initialise the Flask-Admin class.
         # This can not be done during pattern initialisation, because Flask gets loaded and configured during
         # activation phase. So during initialisation it is not available.
-        #
 
-        if self._flask_provider is None:
-            flask_provider = self.app.web.providers.get("flask")
-            if flask_provider is None:
-                raise FlaskNotFoundException("A Flask-Provider must be loaded. Please make sure plugin "
-                                             "GwWebFlask got already loaded")
-            self._flask_provider = flask_provider
-            self._flask_admin = Admin(self._flask_provider.flask_app, name=self.app.name, template_mode='bootstrap3')
+        if self.flask_admin is None:
+            self.flask_admin = Admin(self.app.web.flask, name=self.app.name, template_mode='bootstrap3')
+
+        self.flask_admin.add_view(ModelView(db_clazz, db_session))
 
     def unregister(self):
         pass

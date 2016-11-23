@@ -19,6 +19,7 @@ class RouteManagerApplication:
         self._routes = {}
         self.app = app
         self.log = logging.getLogger(__name__)
+        self.blueprints = {}
 
     def register(self, url, methods, endpoint, plugin, context=None, name=None, description=None, ):
 
@@ -32,17 +33,16 @@ class RouteManagerApplication:
                                                            "miss of an available context during first route "
                                                            "registration.",
                                                            None)
-
             context = basic_context.name
+            context_obj = basic_context
 
         if context is None:
-            context = self.app.web.contexts.default_context.name
+            context_obj = self.app.web.contexts.default_context
+        else:
+            context_obj = self.app.web.contexts.get(context)
 
         if name not in self._routes.keys():
-            self._routes[name] = Route(url, methods, endpoint, context, name, description, plugin)
-
-            for name, provider in self.app.web.providers.get().items():
-                provider.instance.register_route(url, methods, endpoint, context)
+            self._routes[name] = Route(url, methods, endpoint, context_obj, name, description, plugin)
 
     def get(self, name=None, plugin=None):
         return gw_get(self._routes, name, plugin)
@@ -60,3 +60,8 @@ class Route:
         self.name = name
         self.description = description
         self.plugin = plugin
+
+        blueprint = self.context.blueprint
+        blueprint.add_url_rule(url, methods=methods, endpoint=endpoint.__name__, view_func=endpoint)
+        # We have to (re-)register our blueprint to activate the route
+        self.plugin.app.web.flask.register_blueprint(blueprint)

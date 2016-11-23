@@ -1,5 +1,5 @@
-import os
 import logging
+from flask import Blueprint
 
 from groundwork.util import gw_get
 
@@ -24,12 +24,10 @@ class ContextManagerApplication:
 
     def register(self, name, template_folder, static_folder, url_prefix, description, plugin):
         if name not in self._contexts.keys():
-            self._contexts[name] = Context(name, template_folder, static_folder, url_prefix, description, plugin)
+            self._contexts[name] = Context(name, template_folder, static_folder, url_prefix, description, plugin,
+                                           self.app)
             if name == self.app.config.get("DEFAULT_CONTEXT", None) or self.default_context is None:
                 self.default_context = self._contexts[name]
-            for provider_name, provider in self.app.web.providers.get().items():
-                provider.instance.register_context(name, template_folder, static_folder, url_prefix,
-                                                   description=description, plugin=plugin)
         else:
             self.log.warning("Context %s already registered by %s" % (name, self._contexts[name].plugin.name))
 
@@ -54,10 +52,19 @@ class Context:
     They are similar to flask blueprint concept.
     """
 
-    def __init__(self, name, template_folder, static_folder, url_prefix, description, plugin):
+    def __init__(self, name, template_folder, static_folder, url_prefix, description, plugin, app):
         self.name = name
         self.template_folder = template_folder
         self.static_folder = static_folder
         self.url_prefix = url_prefix
         self.description = description
         self.plugin = plugin
+        self.app = app
+
+        self.blueprint = Blueprint(name, __name__,
+                                   url_prefix=url_prefix,
+                                   subdomain=None,
+                                   template_folder=template_folder,
+                                   static_folder=static_folder,
+                                   static_url_path="/static/" + name)
+        self.app.web.flask.register_blueprint(self.blueprint)
