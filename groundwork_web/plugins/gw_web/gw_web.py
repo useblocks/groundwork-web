@@ -32,6 +32,9 @@ class GwWeb(GwWebPattern, GwCommandsPattern):
             self.web.routes.register("/test", ["GET"], self.__test_view,
                                      name="Test", description="Test view of GwWeb")
 
+        # Register the flask debug server.
+        self.web.servers.register("flask_debug", self.__start_flask_debug_server, "Starts the flask debug server")
+
     def deactivate(self):
         self.commands.unregister("server_start")
         self.commands.unregister("server_list")
@@ -54,7 +57,10 @@ class GwWeb(GwWebPattern, GwCommandsPattern):
             echo("  Description: %s" % server.description)
             echo("  Plugin: %s" % server.plugin.name)
 
+    def __start_flask_debug_server(self):
+        self.web.flask.run()
+
     def __test_view(self):
-        return self.web.providers.render("test.html")
+        return self.web.render("test.html")
 
 

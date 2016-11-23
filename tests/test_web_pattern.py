@@ -9,28 +9,6 @@ def test_web_pattern(basicApp, WebPlugin):
     assert hasattr(basicApp, "web") is True
 
 
-def test_web_providers(basicApp, WebPlugin):
-    from groundwork_web.patterns.gw_web_pattern.provider import BaseProvider
-
-    plugin = WebPlugin(basicApp)
-    plugin.activate()
-
-    class TestProvider(BaseProvider):
-        def __init__(self):
-            pass
-
-        def render(self, template):
-            return template
-
-    provider = plugin.web.providers.register("test_provider", TestProvider(), "my test provider")
-
-    assert plugin.app.web.providers.default is not None
-    assert plugin.app.web.providers.default == provider
-
-    rendered_template = plugin.web.providers.render("test_template")
-    assert rendered_template == "test_template"
-
-
 def test_web_servers(basicApp, WebPlugin):
 
     def _test_server_start():
@@ -55,7 +33,7 @@ def test_web_contexts(basicApp, WebPlugin, tmpdir):
     template_folder = tmpdir.mkdir("template")
     static_folder = tmpdir.mkdir("static")
 
-    plugin.web.contexts.register("test_context", template_folder, static_folder, "/test", "test context")
+    plugin.web.contexts.register("test_context", str(template_folder), str(static_folder), "/test", "test context")
 
     context = plugin.app.web.contexts.get("test_context")
     assert context is not None
@@ -83,7 +61,7 @@ def test_web_routes(basicApp, WebPlugin):
     assert route.url == "/"
     assert route.methods == ["GET", "POST"]
     assert route.endpoint == _view
-    assert route.context == plugin.app.web.contexts.default_context.name
+    assert route.context == plugin.app.web.contexts.default_context
     assert route.name == "test_route"
     assert route.description == "test route"
 

@@ -1,5 +1,6 @@
 import os
-from click import Argument, echo
+from flask import request
+
 from groundwork_web.patterns import GwWebPattern
 
 
@@ -63,78 +64,57 @@ class GwWebManager(GwWebPattern):
         self.web.menus.register("Servers", "/webmanager/server", menu=webmanager_menu)
 
     def deactivate(self):
-        self.commands.unregister("server_start")
-        self.commands.unregister("server_list")
-
-    def __server_start(self, server):
-        servers = self.app.web.servers.get()
-        if server not in servers.keys():
-            echo("Server '%s' not found.")
-            echo("Available servers: %s" % ",".join(servers.keys()))
-        else:
-            echo("Starting server %s" % server)
-            servers[server].function()
-
-    def __server_list(self):
-        servers = self.app.web.servers.get()
-        echo("List of registered servers\n")
-        for name, server in servers.items():
-            echo(name)
-            echo("*"*len(name))
-            echo("  Description: %s" % server.description)
-            echo("  Plugin: %s" % server.plugin.name)
+        pass
 
     def __manager_view(self):
-        return self.web.providers.render("manager.html")
+        return self.web.render("manager.html")
 
     def __command_view(self):
-        return self.web.providers.render("commands.html", app=self.app)
+        return self.web.render("commands.html", app=self.app)
 
     def __plugin_view(self):
-        return self.web.providers.render("plugins.html", app=self.app)
+        return self.web.render("plugins.html", app=self.app)
 
     def __plugin_detail_view(self, plugin):
         plugin_instance = self.app.plugins.get(plugin)
         if plugin_instance is None:
             return "404"
 
-        request = self.app.web.providers.default.instance.request
         if request.method == "POST":
             if plugin_instance.active:
                 plugin_instance.deactivate()
             else:
                 plugin_instance.activate()
 
-        return self.web.providers.render("plugin_detail.html", app=self.app, plugin=plugin_instance)
+        return self.web.render("plugin_detail.html", app=self.app, plugin=plugin_instance)
 
     def __plugin_class_view(self, clazz):
         clazz_obj = self.app.plugins.classes.get(clazz)
         if clazz_obj is None:
             return "404"
 
-        request = self.app.web.providers.default.instance.request
         if request.method == "POST":
             plugin_class = self.app.plugins.classes.get(clazz)
             name = request.form["name"] or clazz
             plugin_instance = self.app.plugins.initialise(plugin_class.clazz, name)
 
-        return self.web.providers.render("plugin_class_detail.html", app=self.app, clazz=clazz_obj)
+        return self.web.render("plugin_class_detail.html", app=self.app, clazz=clazz_obj)
 
     def __route_view(self):
         routes = self.app.web.routes.get()
-        return self.web.providers.render("routes.html", routes=routes, app=self.app)
+        return self.web.render("routes.html", routes=routes, app=self.app)
 
     def __context_view(self):
         contexts = self.app.web.contexts.get()
-        return self.web.providers.render("contexts.html", contexts=contexts)
+        return self.web.render("contexts.html", contexts=contexts)
 
     def __provider_view(self):
         providers = self.app.web.providers.get()
-        return self.web.providers.render("providers.html", providers=providers)
+        return self.web.render("providers.html", providers=providers)
 
     def __server_view(self):
         servers = self.app.web.servers.get()
-        return self.web.providers.render("servers.html", servers=servers)
+        return self.web.render("servers.html", servers=servers)
 
     def __menu_view(self):
         clusters = self.app.web.menus.get_clusters()
@@ -143,6 +123,6 @@ class GwWebManager(GwWebPattern):
         for cluster in clusters:
             menus[cluster] = self.app.web.menus.get(cluster=cluster)
 
-        return self.web.providers.render("menus.html", menus=menus)
+        return self.web.render("menus.html", menus=menus)
 
 
