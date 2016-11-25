@@ -13,21 +13,33 @@
             <th>Context</th>
             <th>Plugin</th>
             <th>Endpoint</th>
-            <th>Description</th>
+
         </tr>
     </thead>
 
-{% for name, route in routes.items() %}
+{% for name, route in routes.items() -%}
+    {% set prefix = app.web.contexts.get(route.context.name).url_prefix or "" -%}
+    {% if prefix == "/" -%}
+        {% set prefix="" -%}
+    {% endif -%}
     <tr>
         <td>{{route.name}}</td>
-        <td><a href="{{ app.web.contexts.get(route.context).url_prefix or ""}}{{route.url}}">
-            {{ app.web.contexts.get(route.context).url_prefix or ""}}{{route.url}}
+        <td><a href="{{ prefix }}{{route.url}}">
+            {{ prefix }}{{route.url}}
         </a></td>
         <td>{{route.methods}}</td>
-        <td>{{route.context}}</td>
-        <td>{{route.plugin.name }}</td>
+        <td>
+            <a href="{{url_for('webmanager.__context_view')}}">
+                {{route.context.name}}
+            </a>
+        </td>
+        <td>
+            <a href="{{url_for('webmanager.__plugin_detail_view', plugin_name=route.plugin.name)}}">
+                {{route.plugin.name }}
+            </a>
+        </td>
         <td>{{route.endpoint.__name__}}</td>
-        <td>{{route.description}}</td>
+
     </tr>
 {% endfor %}
 </table>

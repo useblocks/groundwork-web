@@ -57,6 +57,7 @@ class Context:
         self.template_folder = template_folder
         self.static_folder = static_folder
         self.url_prefix = url_prefix
+        self.static_url_path = "/static"
         self.description = description
         self.plugin = plugin
         self.app = app
@@ -66,5 +67,5 @@ class Context:
                                    subdomain=None,
                                    template_folder=template_folder,
                                    static_folder=static_folder,
-                                   static_url_path="/static/" + name)
+                                   static_url_path=self.static_url_path)
         self.app.web.flask.register_blueprint(self.blueprint)

@@ -1,3 +1,4 @@
+import os
 import logging
 from flask import Flask, render_template
 from docutils.core import publish_parts
@@ -50,8 +51,11 @@ class WebPlugin:
     def __init_flask(self, plugin, *args, **kwargs):
         self.app.web.init_flask()
 
-    def render(self, template, **kwargs):
-        return self.app.web.render(template, **kwargs)
+    def render(self, template, plugin=None, **kwargs):
+        if plugin is None:
+            plugin = self.plugin
+
+        return self.app.web.render(template, plugin, **kwargs)
 
 
 class WebApplication:
@@ -66,6 +70,10 @@ class WebApplication:
         self.menus = MenuApplication(app)
 
     def init_flask(self):
+        """
+        Initialises and configures flask, is not already done,.
+        :return: None
+        """
         if self.flask is None:
             self.flask = Flask(self.app.name)
 
@@ -73,9 +81,19 @@ class WebApplication:
             # Use it like {{ send_signal("my_signal") }}
             self.flask.jinja_env.globals.update(send_signal=self.app.signals.send)
 
+            self.flask.jinja_env.globals.update(app=self.app)
+
             self.flask.jinja_env.globals.update(get_menu=self.__get_menu)
             self.flask.jinja_env.globals.update(get_config=self.app.config.get)
             self.flask.jinja_env.globals.update(rst2html=self.__rst2html)
+
+            # Lets set the secret key for flask. This should be set in configuration files, so that
+            # signed cookies are still valid if the server got restarted.
+            # If there is no such parameter available, we create a temporary key, which is only
+            # available during server runtime.
+            self.flask.secret_key = self.app.config.get("FLASK_SECRET_KEY", os.urandom(24))
+
+            self.flask.config["SERVER_NAME"] = self.app.config.get("FLASK_SERVER_NAME", "localhost")
 
     def __get_menu(self, cluster="base"):
         return self.menus.get(cluster=cluster)
@@ -89,7 +107,7 @@ class WebApplication:
             return doc_rendered[part]
         return document
 
-    def render(self, template, **kwargs):
+    def render(self, template, plugin=None, **kwargs):
         """
         Renders a template and returns a strings, which represents the rendered data.
 
@@ -100,5 +118,5 @@ class WebApplication:
         :return: Rendered template as string
         """
 
-        return render_template(template, **kwargs)
+        return render_template(template, app=self.app, plugin=plugin, **kwargs)
 

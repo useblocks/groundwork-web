@@ -1,0 +1,35 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+<h1>Receivers list</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Signal</th>
+            <th>Sender</th>
+            <th>Plugin</th>
+            <th>Function</th>
+    </tr>
+    </thead>
+
+{% for name, receiver in app.signals.get_receiver().items() -%}
+    <tr>
+        <td>{{receiver.name}}</td>
+        <td>{{receiver.description}}</td>
+        <td>{{receiver.signal}}</td>
+        <td>{{receiver.sender.name}}</td>
+        <td>
+            <a href="{{url_for('webmanager.__plugin_detail_view', plugin_name=receiver.plugin.name)}}">
+                {{receiver.plugin.name }}
+            </a>
+        </td>
+        <td>{{receiver.function.__name__}}</td>
+    </tr>
+{% endfor %}
+</table>
+
+{% endblock %}

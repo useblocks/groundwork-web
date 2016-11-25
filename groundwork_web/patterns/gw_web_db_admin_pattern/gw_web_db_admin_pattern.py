@@ -61,14 +61,26 @@ class WebDatabaseApplication:
         self.flask_admin = None
 
     def register(self, db_clazz, db_session):
+        """
+        Adds a new class-based view to the flask-admin instance.
+
+        :param db_clazz: SQLAlchemy class object
+        :param db_session:  session object
+        :return: Name of the endpoint, which can be used to generate urls for it.
+        """
         # We must initialise the Flask-Admin class.
         # This can not be done during pattern initialisation, because Flask gets loaded and configured during
         # activation phase. So during initialisation it is not available.
 
         if self.flask_admin is None:
-            self.flask_admin = Admin(self.app.web.flask, name=self.app.name, template_mode='bootstrap3')
+            self.flask_admin = Admin(self.app.web.flask,
+                                     name=self.app.name,
+                                     base_template="master.html",
+                                     template_mode='bootstrap3')
 
-        self.flask_admin.add_view(ModelView(db_clazz, db_session))
+        endpoint = "admin_%s" % db_clazz.__name__.lower()
+        self.flask_admin.add_view(ModelView(db_clazz, db_session, endpoint=endpoint))
+        return endpoint
 
     def unregister(self):
         pass

@@ -2,31 +2,52 @@
 
 {% block content %}
 
-<h1>Plugin {{ plugin.name }}</h1>
+<h1>Plugin {{ plugin_instance.name }}</h1>
 <table class="table table-striped">
     <tbody>
         <tr>
             <th>Name</th>
-            <td>{{plugin.name}}</td>
+            <td>{{plugin_instance.name}}</td>
         </tr>
         <tr>
             <th>Description</th>
-            <td>{{ rst2html(plugin.__doc__)|safe }}</td>
+            <td>{{ rst2html(plugin_instance.__doc__)|safe }}</td>
         </tr>
         <tr>
             <th>Plugin Class</th>
-            <td>{{plugin.__class__.__name__}}</td>
+            <td>
+                <a href="{{url_for('webmanager.__plugin_class_view', clazz=plugin_instance.__class__.__name__)}}">
+                    {{plugin_instance.__class__.__name__}}
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <th>Distribution</th>
+            <td>{{app.plugins.classes.get(plugin_instance.__class__.__name__).distribution.key}}</td>
         </tr>
         <tr>
             <th>Active</th>
-            <td>{{plugin.active}}</td>
+            <td>{{plugin_instance.active}}</td>
+        </tr>
+        <tr>
+            <th>Locations</th>
+            <td>
+                <b>Path</b>: {{plugin_instance.path}}<br>
+                <b>Dir</b>: {{plugin_instance.dir}}<br>
+                <b>File</b>: {{plugin_instance.file}}<br>
+                <b>Distribution Path</b>: {{app.plugins.classes.get(plugin_instance.__class__.__name__).distribution.path}}
+            </td>
         </tr>
         <tr>
             <th>Needed Plugins</th>
             <td>
                 <ol>
-                    {%  for needed_plugin in plugin.needed_plugins -%}
-                        <li>{{ needed_plugin }}</li>
+                    {%  for needed_plugin in plugin_instance.needed_plugins -%}
+                        <li>
+                            <a href="{{url_for('webmanager.__plugin_detail_view', plugin_name=needed_plugin)}}">
+                                {{ needed_plugin }}
+                            </a>
+                        </li>
                     {% endfor -%}
                 </ol>
 
@@ -38,7 +59,7 @@
                 <form method="POST">
                     <div class="form-group">
                         <button type="submit" class="btn btn-default">
-                            {% if plugin.active %}
+                            {% if plugin_instance.active %}
                             Deactivate
                             {% else %}
                             Activate

@@ -1,0 +1,26 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+<h1>Documents list</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Plugin</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for name, document in app.documents.get().items() %}
+        <tr>
+            <td>{{document.name}}</td>
+            <td>{{document.description}}</td>
+            <td>{{document.plugin.name}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

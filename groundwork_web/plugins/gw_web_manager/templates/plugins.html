@@ -17,7 +17,7 @@
     <tbody>
         {% for name, plugin in app.plugins.get().items() %}
         <tr>
-            <td><a href="{{ url_for('.__plugin_detail_view', plugin=plugin.name) }}">{{plugin.name}}</a></td>
+            <td><a href="{{ url_for('.__plugin_detail_view', plugin_name=plugin.name) }}">{{plugin.name}}</a></td>
     {#        <td><a href="{{ app.web.contexts.get(plugin.context).url_prefix or ""}}{{plugin.url}}">#}
     {#            {{ app.web.contexts.get(plugin.context).url_prefix or ""}}{{plugin.url}}#}
     {#        </a></td>#}
