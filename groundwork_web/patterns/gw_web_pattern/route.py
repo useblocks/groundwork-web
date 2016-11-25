@@ -42,7 +42,7 @@ class RouteManagerApplication:
             context_obj = self.app.web.contexts.get(context)
 
         if name not in self._routes.keys():
-            self._routes[name] = Route(url, methods, endpoint, context_obj, name, description, plugin)
+            self._routes[name] = Route(url, methods, endpoint, context_obj, name, description, plugin, self.app)
 
     def get(self, name=None, plugin=None):
         return gw_get(self._routes, name, plugin)
@@ -52,7 +52,7 @@ class Route:
     """
     """
 
-    def __init__(self, url, methods, endpoint, context, name, description, plugin):
+    def __init__(self, url, methods, endpoint, context, name, description, plugin, app):
         self.url = url
         self.methods = methods
         self.endpoint = endpoint
@@ -60,8 +60,9 @@ class Route:
         self.name = name
         self.description = description
         self.plugin = plugin
+        self.app = app
 
         blueprint = self.context.blueprint
         blueprint.add_url_rule(url, methods=methods, endpoint=endpoint.__name__, view_func=endpoint)
         # We have to (re-)register our blueprint to activate the route
-        self.plugin.app.web.flask.register_blueprint(blueprint)
+        self.app.web.flask.register_blueprint(blueprint)
