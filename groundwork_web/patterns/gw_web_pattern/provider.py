@@ -7,7 +7,7 @@ class ProviderManagerPlugin:
         self.plugin = plugin
         self.log = plugin.log
         self.app = plugin.app
-        self.default = plugin.app.web.providers.default
+        #self.default = plugin.app.web.providers.default
 
     def register(self, name, instance, description):
         return self.app.web.providers.register(name, instance, description, self.plugin)
@@ -30,6 +30,8 @@ class ProviderManagerApplication:
 
         if name == self.app.config.get("DEFAULT_PROVIDER", None) or self.default is None:
             self.default = self._providers[name]
+
+        return self._providers[name]
 
     def render(self, template, provider=None, **kwargs):
         if self.default is None:

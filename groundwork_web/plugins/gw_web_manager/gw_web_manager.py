@@ -1,11 +1,17 @@
 import os
-from click import Argument, echo
+from flask import request, url_for
+
 from groundwork_web.patterns import GwWebPattern
 
 
 class GwWebManager(GwWebPattern):
+    """
+    Provides functions and views to manage the application via a web interface.
+
+    """
     def __init__(self, *args, **kwargs):
         self.name = kwargs.get("name", self.__class__.__name__)
+        self.needed_plugins = ["GwWeb"]
         super().__init__(*args, **kwargs)
 
     def activate(self):
@@ -16,6 +22,8 @@ class GwWebManager(GwWebPattern):
                                    static_folder=static_folder,
                                    url_prefix="/webmanager",
                                    description="context for web manager urls")
+
+        # Pure groundwork objects
 
         self.web.routes.register("/", ["GET"], self.__manager_view, context="webmanager",
                                  name="manager_view", description="Entry-Page for the webmanager")
@@ -30,9 +38,20 @@ class GwWebManager(GwWebPattern):
                                  context="webmanager",
                                  name="plugin_class_details", description="Shows details of a plugin class")
 
-        self.web.routes.register("/plugin/instance/<plugin>", ["GET", "POST"], self.__plugin_detail_view,
+        self.web.routes.register("/plugin/instance/<plugin_name>", ["GET", "POST"], self.__plugin_detail_view,
                                  context="webmanager",
                                  name="plugin_details", description="Shows details of a plugin instance")
+
+        self.web.routes.register("/signal", ["GET"], self.__signal_view, context="webmanager",
+                                 name="signal_list", description="Lists all registered signals")
+
+        self.web.routes.register("/receiver", ["GET"], self.__receiver_view, context="webmanager",
+                                 name="receiver_list", description="Lists all registered receivers")
+
+        self.web.routes.register("/document", ["GET"], self.__document_view, context="webmanager",
+                                 name="document_list", description="Lists all registered documents")
+
+        # WEB objects
 
         self.web.routes.register("/route", ["GET"], self.__route_view, context="webmanager",
                                  name="route_list", description="Lists all registered routes")
@@ -43,94 +62,83 @@ class GwWebManager(GwWebPattern):
         self.web.routes.register("/context", ["GET"], self.__context_view, context="webmanager",
                                  name="context_list", description="Lists all registered contexts")
 
-        self.web.routes.register("/provider", ["GET"], self.__provider_view, context="webmanager",
-                                 name="provider_list", description="Lists all registered providers")
-
         self.web.routes.register("/server", ["GET"], self.__server_view, context="webmanager",
                                  name="server_list", description="Lists all registered servers")
 
-        webmanager_menu = self.web.menus.register("WebManager", "/webmanager")
-        self.web.menus.register("Commands", "/webmanager/command", menu=webmanager_menu)
-        self.web.menus.register("Plugins", "/webmanager/plugin", menu=webmanager_menu)
-        self.web.menus.register("Routes", "/webmanager/route", menu=webmanager_menu)
-        self.web.menus.register("Menu entries", "/webmanager/menu", menu=webmanager_menu)
-        self.web.menus.register("Contexts", "/webmanager/context", menu=webmanager_menu)
-        self.web.menus.register("Providers", "/webmanager/provider", menu=webmanager_menu)
-        self.web.menus.register("Servers", "/webmanager/server", menu=webmanager_menu)
+        with self.app.web.flask.app_context():
+            webmanager_menu = self.web.menus.register("WebManager", "/webmanager")
+            webmanager_menu.register("Overview", "/webmanager")
+            webmanager_menu.register("Commands", url_for("webmanager.__command_view"))
+            webmanager_menu.register("Signals", url_for("webmanager.__signal_view"))
+            webmanager_menu.register("Receivers", url_for("webmanager.__receiver_view"))
+            webmanager_menu.register("Plugins", url_for("webmanager.__plugin_view"))
+            webmanager_menu.register("Routes", url_for("webmanager.__route_view"))
+            webmanager_menu.register("Menu entries", url_for("webmanager.__menu_view"))
+            webmanager_menu.register("Contexts", url_for("webmanager.__context_view"))
+            webmanager_menu.register("Servers", url_for("webmanager.__server_view"))
+            webmanager_menu.register("Documents", url_for("webmanager.__document_view"))
 
     def deactivate(self):
-        self.commands.unregister("server_start")
-        self.commands.unregister("server_list")
-
-    def __server_start(self, server):
-        servers = self.app.web.servers.get()
-        if server not in servers.keys():
-            echo("Server '%s' not found.")
-            echo("Available servers: %s" % ",".join(servers.keys()))
-        else:
-            echo("Starting server %s" % server)
-            servers[server].function()
-
-    def __server_list(self):
-        servers = self.app.web.servers.get()
-        echo("List of registered servers\n")
-        for name, server in servers.items():
-            echo(name)
-            echo("*"*len(name))
-            echo("  Description: %s" % server.description)
-            echo("  Plugin: %s" % server.plugin.name)
+        pass
 
     def __manager_view(self):
-        return self.web.providers.render("manager.html")
+        return self.web.render("manager.html")
 
     def __command_view(self):
-        return self.web.providers.render("commands.html", app=self.app)
+        return self.web.render("commands.html")
+
+    def __document_view(self):
+        return self.web.render("documents.html")
+
+    def __signal_view(self):
+        return self.web.render("signals.html")
+
+    def __receiver_view(self):
+        return self.web.render("receivers.html")
 
     def __plugin_view(self):
-        return self.web.providers.render("plugins.html", app=self.app)
+        return self.web.render("plugins.html")
 
-    def __plugin_detail_view(self, plugin):
-        plugin_instance = self.app.plugins.get(plugin)
+    def __plugin_detail_view(self, plugin_name):
+        plugin_instance = self.app.plugins.get(plugin_name)
         if plugin_instance is None:
             return "404"
 
-        request = self.app.web.providers.default.instance.request
         if request.method == "POST":
             if plugin_instance.active:
                 plugin_instance.deactivate()
             else:
                 plugin_instance.activate()
 
-        return self.web.providers.render("plugin_detail.html", app=self.app, plugin=plugin_instance)
+        return self.web.render("plugin_detail.html", plugin_instance=plugin_instance)
 
     def __plugin_class_view(self, clazz):
         clazz_obj = self.app.plugins.classes.get(clazz)
         if clazz_obj is None:
             return "404"
 
-        request = self.app.web.providers.default.instance.request
         if request.method == "POST":
             plugin_class = self.app.plugins.classes.get(clazz)
             name = request.form["name"] or clazz
             plugin_instance = self.app.plugins.initialise(plugin_class.clazz, name)
 
-        return self.web.providers.render("plugin_class_detail.html", app=self.app, clazz=clazz_obj)
+        return self.web.render("plugin_class_detail.html", clazz=clazz_obj)
 
     def __route_view(self):
         routes = self.app.web.routes.get()
-        return self.web.providers.render("routes.html", routes=routes, app=self.app)
+        return self.web.render("routes.html", routes=routes)
 
     def __context_view(self):
         contexts = self.app.web.contexts.get()
-        return self.web.providers.render("contexts.html", contexts=contexts)
+        return self.web.render("contexts.html", contexts=contexts)
 
     def __provider_view(self):
         providers = self.app.web.providers.get()
-        return self.web.providers.render("providers.html", providers=providers)
+        return self.web.render("providers.html", providers=providers)
 
     def __server_view(self):
         servers = self.app.web.servers.get()
-        return self.web.providers.render("servers.html", servers=servers)
+        return self.web.render("servers.html", servers=servers)
 
     def __menu_view(self):
         clusters = self.app.web.menus.get_clusters()
@@ -139,6 +147,6 @@ class GwWebManager(GwWebPattern):
         for cluster in clusters:
             menus[cluster] = self.app.web.menus.get(cluster=cluster)
 
-        return self.web.providers.render("menus.html", menus=menus)
+        return self.web.render("menus.html", menus=menus)
 
 

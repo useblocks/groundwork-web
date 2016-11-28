@@ -19,8 +19,7 @@ class MenuApplication:
     def __init__(self, app):
         self._routes = {}
         self.app = app
-        self._menus = {}
-        self._menus["base"] = {}
+        self._menus = {"base": {}}
 
     def register(self, name, link, plugin, icon=None, description=None, link_text=None, cluster="base", menu=None):
 
@@ -63,9 +62,13 @@ class Menu:
 
         self.sub_menus = {}
 
-    def register(self, name, link, plugin, icon=None, description=None, link_text=None):
+    def register(self, name, link, plugin=None, icon=None, description=None, link_text=None):
         if name in self.sub_menus.keys():
             raise NameError("sub menu %s already exists for menu %s" % (name, self.name))
+
+        if plugin is None:
+            plugin = self.plugin
+
         self.sub_menus[name] = Menu(name, link, plugin, icon, description, link_text)
         return self.sub_menus[name]
 

@@ -1,0 +1,2 @@
+class FlaskNotFoundException(BaseException):
+    pass

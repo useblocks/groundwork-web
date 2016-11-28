@@ -23,7 +23,9 @@ setup(
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     include_package_data=True,
     platforms='any',
-    install_requires=['groundwork', 'flask', 'pytest-runner', 'sphinx', 'docutils'],
+    install_requires=['groundwork', 'groundwork-database',
+                      'flask', 'flask_admin', 'flask-restless',
+                      'pytest-runner', 'sphinx', 'docutils'],
     tests_require=['pytest', 'pytest-flake8'],
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -39,9 +41,7 @@ setup(
     entry_points={
         'console_scripts': ["groundwork_web = "
                             "groundwork_web.applications.groundwork_web_app:start_app"],
-        'groundwork.plugin': ["groundwork_web_flask_plugin = "
-                              "groundwork_web.plugins.gw_web_flask.gw_web_flask:GwWebFlask",
-                              "groundwork_web_plugin = "
+        'groundwork.plugin': ["groundwork_web_plugin = "
                               "groundwork_web.plugins.gw_web.gw_web:GwWeb",
                               "groundwork_web_manager_plugin = "
                               "groundwork_web.plugins.gw_web_manager.gw_web_manager:GwWebManager"

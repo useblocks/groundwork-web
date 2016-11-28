@@ -10,5 +10,4 @@ PLUGINS = [
     "GwPluginsInfo",
     "GwWeb",
     "GwWebManager",
-    "GwWebFlask"
 ]
