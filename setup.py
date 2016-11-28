@@ -23,7 +23,9 @@ setup(
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     include_package_data=True,
     platforms='any',
-    install_requires=['groundwork', 'groundwork-database', 'flask', 'flask_admin', 'pytest-runner', 'sphinx', 'docutils'],
+    install_requires=['groundwork', 'groundwork-database',
+                      'flask', 'flask_admin', 'flask-restless',
+                      'pytest-runner', 'sphinx', 'docutils'],
     tests_require=['pytest', 'pytest-flake8'],
     classifiers=[
         'Development Status :: 3 - Alpha',
