@@ -61,6 +61,7 @@ class Context:
         self.description = description
         self.plugin = plugin
         self.app = app
+        self.log = logging.getLogger(__name__)
 
         self.blueprint = Blueprint(name, __name__,
                                    url_prefix=url_prefix,
@@ -69,3 +70,5 @@ class Context:
                                    static_folder=static_folder,
                                    static_url_path=self.static_url_path)
         self.app.web.flask.register_blueprint(self.blueprint)
+
+        self.log.debug("Context registered: %s (%s) for plugin %s" %(self.name, self.url_prefix, self.plugin.name))

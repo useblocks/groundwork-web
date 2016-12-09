@@ -61,8 +61,12 @@ class Route:
         self.description = description
         self.plugin = plugin
         self.app = app
+        self.log = logging.getLogger(__name__)
 
         blueprint = self.context.blueprint
         blueprint.add_url_rule(url, methods=methods, endpoint=endpoint.__name__, view_func=endpoint)
         # We have to (re-)register our blueprint to activate the route
         self.app.web.flask.register_blueprint(blueprint)
+
+        self.log.info("Route registered:  %s for context %s (%s)" % (self.url, self.context.name,
+                                                                             self.context.url_prefix))

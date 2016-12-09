@@ -25,7 +25,7 @@ class GwWeb(GwWebPattern, GwCommandsPattern):
         self.web.contexts.register("web",
                                    template_folder=template_folder,
                                    static_folder=static_folder,
-                                   url_prefix=None,
+                                   url_prefix="/",
                                    description="web context, which was created by GwWeb as initial context")
 
         if self.app.config.get("SHOW_WEB_TEST_PAGE", True):
