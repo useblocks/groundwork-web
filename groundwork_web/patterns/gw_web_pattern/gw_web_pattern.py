@@ -94,6 +94,7 @@ class WebApplication:
             self.flask.secret_key = self.app.config.get("FLASK_SECRET_KEY", os.urandom(24))
 
             self.flask.config["SERVER_NAME"] = self.app.config.get("FLASK_SERVER_NAME", "localhost")
+            self.log.info("Using FLASK_SERVER_NAME=%s" % self.flask.config.get("SERVER_NAME"))
 
     def __get_menu(self, cluster="base"):
         return self.menus.get(cluster=cluster)

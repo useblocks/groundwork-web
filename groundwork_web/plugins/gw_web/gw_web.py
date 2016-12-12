@@ -58,6 +58,9 @@ class GwWeb(GwWebPattern, GwCommandsPattern):
             echo("  Plugin: %s" % server.plugin.name)
 
     def __start_flask_debug_server(self):
+
+        self.log.info("Flask Server Name: %s" % self.app.config.get("FLASK_SERVER_NAME", "Not set, \
+                                                                                               using 0.0.0.0:5000"))
         self.web.flask.run(host=str(self.app.config.get("FLASK_HOST", "0.0.0.0")),
                            port=int(self.app.config.get("FLASK_PORT", 5000)),
                            debug=bool(self.app.config.get("FLASK_DEBUG", True)))
