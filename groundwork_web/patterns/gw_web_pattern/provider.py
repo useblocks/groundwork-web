@@ -7,7 +7,7 @@ class ProviderManagerPlugin:
         self.plugin = plugin
         self.log = plugin.log
         self.app = plugin.app
-        #self.default = plugin.app.web.providers.default
+        # self.default = plugin.app.web.providers.default
 
     def register(self, name, instance, description):
         return self.app.web.providers.register(name, instance, description, self.plugin)
@@ -95,6 +95,3 @@ class BaseProvider:
 
     def render(self, template, **kwargs):
         pass
-
-
-

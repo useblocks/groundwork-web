@@ -75,7 +75,3 @@ class WebRestApplication:
 
     def unregister(self):
         pass
-
-
-
-

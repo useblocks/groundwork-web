@@ -120,7 +120,7 @@ class GwWebManager(GwWebPattern):
         if request.method == "POST":
             plugin_class = self.app.plugins.classes.get(clazz)
             name = request.form["name"] or clazz
-            plugin_instance = self.app.plugins.initialise(plugin_class.clazz, name)
+            self.app.plugins.initialise(plugin_class.clazz, name)
 
         return self.web.render("plugin_class_detail.html", clazz=clazz_obj)
 
@@ -148,5 +148,3 @@ class GwWebManager(GwWebPattern):
             menus[cluster] = self.app.web.menus.get(cluster=cluster)
 
         return self.web.render("menus.html", menus=menus)
-
-

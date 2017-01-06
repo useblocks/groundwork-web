@@ -120,4 +120,3 @@ class WebApplication:
         """
 
         return render_template(template, app=self.app, plugin=plugin, **kwargs)
-

@@ -1,5 +1,5 @@
 import pytest
-from groundwork_web.patterns import GwWebPattern
+
 
 @pytest.fixture
 def basicApp():
@@ -25,6 +25,7 @@ def EmptyPlugin():
 def WebPlugin():
     from tests.test_plugins.web_plugin import WebPlugin
     return WebPlugin
+
 
 @pytest.fixture
 def WebDatabasePlugin():

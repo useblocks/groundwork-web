@@ -76,4 +76,3 @@ class Menu:
         if name not in self.sub_menus.keys():
             raise NameError("sub menu %s does not exist for menu %s" % (name, self.name))
         del(self.sub_menus[name])
-

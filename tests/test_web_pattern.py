@@ -80,12 +80,3 @@ def test_web_menus(basicApp, WebPlugin):
     menu_level_2_a = menu_level_1_a.register("level_2_menu", "level_2")
     assert plugin.app.web.menus.get("level_1_menu", cluster="a") == menu_level_1_a
     assert plugin.app.web.menus.get("level_1_menu", cluster="a").sub_menus["level_2_menu"] == menu_level_2_a
-
-
-
-
-
-
-
-
-

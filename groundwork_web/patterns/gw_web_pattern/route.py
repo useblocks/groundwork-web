@@ -32,7 +32,7 @@ class RouteManagerApplication:
                                                            "basic context, which was created automatically due the "
                                                            "miss of an available context during first route "
                                                            "registration.",
-                                                           None)
+                                                           plugin)
             context = basic_context.name
             context_obj = basic_context
 
@@ -69,4 +69,4 @@ class Route:
         self.app.web.flask.register_blueprint(blueprint)
 
         self.log.info("Route registered:  %s for context %s (%s)" % (self.url, self.context.name,
-                                                                             self.context.url_prefix))
+                                                                     self.context.url_prefix))

@@ -9,4 +9,3 @@ def test_web_db_admin(basicApp, WebDatabasePlugin):
 
     assert hasattr(plugin.web, "db") is True
     assert hasattr(plugin.app.web, "db") is True
-

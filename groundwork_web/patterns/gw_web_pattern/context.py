@@ -71,4 +71,4 @@ class Context:
                                    static_url_path=self.static_url_path)
         self.app.web.flask.register_blueprint(self.blueprint)
 
-        self.log.debug("Context registered: %s (%s) for plugin %s" %(self.name, self.url_prefix, self.plugin.name))
+        self.log.debug("Context registered: %s (%s) for plugin %s" % (self.name, self.url_prefix, self.plugin.name))

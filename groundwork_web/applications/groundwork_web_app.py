@@ -12,5 +12,6 @@ def register_app():
     app.plugins.activate(app.config.PLUGINS)
     return app
 
+
 if __name__ == "__main__":  # pragma: no cover
     start_app()

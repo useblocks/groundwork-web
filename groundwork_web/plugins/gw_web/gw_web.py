@@ -53,7 +53,7 @@ class GwWeb(GwWebPattern, GwCommandsPattern):
         echo("List of registered servers\n")
         for name, server in servers.items():
             echo(name)
-            echo("*"*len(name))
+            echo("*" * len(name))
             echo("  Description: %s" % server.description)
             echo("  Plugin: %s" % server.plugin.name)
 
@@ -67,5 +67,3 @@ class GwWeb(GwWebPattern, GwCommandsPattern):
 
     def __test_view(self):
         return self.web.render("test.html")
-
-
