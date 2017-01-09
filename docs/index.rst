@@ -33,34 +33,56 @@ Package content
    * groundwork_web_app
 
  * Plugins
+
    * gw_web
    * gw_web_manager
 
  * Patterns
+
    * gw_web_pattern
+   * gw_web_db_admin_pattern
+   * gw_web_db_rest_pattern
 
  * Recipes
 
    * None
 
-groundwork_web_app (Application)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Applications
+------------
+groundwork_web_app
+~~~~~~~~~~~~~~~~~~
 Example application, which mainly loads the plugin gw_web and gw_web_manager
 
-gw_web (Plugin)
-~~~~~~~~~~~~~~~
+Plugins
+-------
+gw_web
+~~~~~~
 Provides command line commands to to show and start web servers. Configures also the web server "flask_debug".
 
-gw_web_manager (Plugin)
-~~~~~~~~~~~~~~~~~~~~~~~
+gw_web_manager
+~~~~~~~~~~~~~~
 Provides web views and functions to manage groundwork objects like commands, recipes, signals, web routes and more.
 Allwos the user to get a fast overview about the running applications and its configuration.
 
-gw_web_pattern (Pattern)
-~~~~~~~~~~~~~~~~~~~~~~~~
+Patterns
+--------
+gw_web_pattern
+~~~~~~~~~~~~~~
 
 Allows plugins to register web routes and servers.
 Cares about the correct setup of flask, on which most groundwork web functions are based on.
+
+gw_web_db_admin_pattern
+~~~~~~~~~~~~~~~~~~~~~~~
+Allows the registration of database tables and provides admin web views for them.
+
+This enables you to create, read, update and delete (CRUD) content of database tables via a web interface.
+
+gw_web_db_rest_pattern
+~~~~~~~~~~~~~~~~~~~~~~
+Allows the registration of database tables and provides a REST interface for them.
+
+This enables you to create, read, update and delete (CRUD) content of database tables via a REST interface.
 
 
 .. toctree::
