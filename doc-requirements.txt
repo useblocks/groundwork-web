@@ -1,3 +1,2 @@
 gitpython
 groundwork
-sphinx.ext.inheritance_diagram
