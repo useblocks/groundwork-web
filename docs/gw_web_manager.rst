@@ -1,5 +1,5 @@
-gw_web_manager
-==============
+GwWebManager
+============
 
 Provides views to manage groundwork objects and web objects.
 

@@ -1,5 +1,5 @@
-gw_web_app
-==========
+GroundworkWebApp
+================
 
 The gw_web_app is simple example application and loads mainly the plugins gw_web and gw_web_manager.
 
