@@ -27,6 +27,14 @@ groundwork-web provides web app management functions to applications based on th
 
 This package contains the following applications, plugins or patterns:
 
+.. sidebar:: groundwork framework
+
+   `groundwork`_ is a plugin based Python application framework, which can be used to create various types of applications:
+   console scripts, desktop apps, dynamic websites and more.
+
+   Visit `groundwork.useblocks.com <http://groundwork.useblocks.com>`_
+   or read the `technical documentation <https://groundwork.readthedocs.io>`_ for more information.
+
 Applications
 ------------
 GroundworkWebApp
@@ -72,4 +80,3 @@ Table of content
    applications
    plugins
    patterns
-   contribution
