@@ -1,3 +1,5 @@
+.. _gwwebapp:
+
 GroundworkWebApp
 ================
 

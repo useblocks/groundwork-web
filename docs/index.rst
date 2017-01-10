@@ -39,7 +39,7 @@ Applications
 ------------
 GroundworkWebApp
 ~~~~~~~~~~~~~~~~
-Example application, which mainly loads the plugin gw_web and gw_web_manager
+Example application, which mainly loads the plugin :ref:`gwweb` and :ref:`gwwebmanager`
 
 Plugins
 -------
@@ -57,7 +57,7 @@ Patterns
 GwWebPattern
 ~~~~~~~~~~~~
 Allows plugins to register web routes and servers.
-Cares about the correct setup of flask, on which most groundwork web functions are based on.
+Cares about the correct setup of `flask <http://flask.pocoo.org/>`_, on which most groundwork web functions are based on.
 
 GwWebDbAdminPattern
 ~~~~~~~~~~~~~~~~~~~
