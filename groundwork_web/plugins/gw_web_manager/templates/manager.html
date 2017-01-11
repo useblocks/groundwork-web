@@ -44,62 +44,81 @@
         <div class="thumbnail">
             <div class="caption">
                 <h3>Receivers <small>({{ app.signals.get_receiver()|length }})</small></h3>
-                <p>See all registered receivers and their details.</p>
+                <p>See all registered receivers and their details on one page.</p>
                 <p><a href="{{ url_for('webmanager.__receiver_view') }}" class="btn btn-primary btn-block"
                     role="button">Receivers</a></p>
             </div>
         </div>
     </div>
 
-    {% if app.commands %}
+
     <div class="col-sm-6 col-md-4">
         <div class="thumbnail">
             <div class="caption">
+                {% if app.commands %}
                 <h3>Commands <small>({{ app.commands.get()|length }})</small></h3>
                 <p>Get a list of all available commands for the command line interface.</p>
                 <p><a href="{{ url_for('webmanager.__command_view') }}" class="btn btn-primary btn-block"
                       role="button">Commands</a></p>
+                {% else %}
+                <h3>Commands <small>(0)</small></h3>
+                <p>Get a list of all available commands for the command line interface.</p>
+                <p><a href="{{ url_for('webmanager.__command_view') }}" class="btn btn-primary btn-block disabled" role="button">Commands</a></p>
+                {% endif %}
             </div>
         </div>
     </div>
-    {% endif %}
 
-    {% if app.shared_objects %}
     <div class="col-sm-6 col-md-4">
         <div class="thumbnail">
             <div class="caption">
+                {% if app.shared_objects %}
                 <h3>Shared objects <small>({{ app.shared_objects.get()|length }})</small></h3>
-                <p>Shows you a list of all available shared objects.</p>
+                <p>Shows you a list of all available shared objects on one page.</p>
                 <p><a href="#" class="btn btn-primary btn-block" role="button">Shared objects</a></p>
+                {% else %}
+                <h3>Shared objects <small>(0)</small></h3>
+                <p>Shows you a list of all available shared objects on one page.</p>
+                <p><a href="#" class="btn btn-primary btn-block disabled" role="button">Shared objects</a></p>
+                {% endif %}
             </div>
         </div>
     </div>
-    {% endif %}
 
-    {% if app.documents %}
     <div class="col-sm-6 col-md-4">
         <div class="thumbnail">
             <div class="caption">
+                {% if app.documents %}
                 <h3>Documents <small>({{ app.documents.get()|length }})</small></h3>
-                <p>Shows you a list of all registered documents.</p>
+                <p>Shows you a list of all registered documents on a single page.</p>
                 <p><a href="{{ url_for('webmanager.__document_view') }}" class="btn btn-primary btn-block"
                       role="button">Documents</a></p>
+                {% else %}
+                <h3>Documents <small>(0)</small></h3>
+                <p>Shows you a list of all registered documents on a single page.</p>
+                <p><a href="{{ url_for('webmanager.__document_view') }}" class="btn btn-primary btn-block disabled"
+                      role="button">Documents</a></p>
+                {% endif %}
             </div>
         </div>
     </div>
-    {% endif %}
 
-    {% if app.recipies %}
     <div class="col-sm-6 col-md-4">
         <div class="thumbnail">
             <div class="caption">
+                {% if app.recipies %}
                 <h3>Recipes <small>({{ app.recipes.get()|length }})</small></h3>
-                <p>View a list of all available recipes.</p>
+                <p>View a list of all available recipes on a single page.</p>
                 <p><a href="#" class="btn btn-primary btn-block" role="button">Recipes</a></p>
+                {% else %}
+                <h3>Recipes <small>(0)</small></h3>
+                <p>View a list of all available recipes on a single page.</p>
+                <p><a href="#" class="btn btn-primary btn-block disabled" role="button">Recipes</a></p>
+                {% endif %}
             </div>
         </div>
     </div>
-    {% endif %}
+
 
 </div>
 
@@ -122,7 +141,7 @@
         <div class="thumbnail">
             <div class="caption">
                 <h3>Servers <small>({{ app.web.servers.get()|length }})</small></h3>
-                <p> Shows you a list of all registered web server.</p>
+                <p> Shows you a list of all registered web servers and its configuration.</p>
                 <p><a href="{{ url_for(".__server_view") }}" class="btn btn-primary btn-block"
                       role="button">Servers</a></p>
             </div>

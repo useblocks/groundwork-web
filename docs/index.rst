@@ -1,3 +1,6 @@
+.. highlight:: python
+   :linenothreshold: 5
+
 .. image:: https://img.shields.io/pypi/l/groundwork-web.svg
    :target: https://pypi.python.org/pypi/groundwork-web
    :alt: License
@@ -45,7 +48,7 @@ Plugins
 -------
 GwWeb
 ~~~~~
-Provides command line commands to to show and start web servers. Configures also the web server "flask_debug".
+Provides command line commands to show and start web servers. Configures also the web server "flask_debug".
 
 GwWebManager
 ~~~~~~~~~~~~

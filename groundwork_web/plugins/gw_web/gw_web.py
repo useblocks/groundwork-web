@@ -59,10 +59,14 @@ class GwWeb(GwWebPattern, GwCommandsPattern):
 
     def __start_flask_debug_server(self):
 
-        self.log.info("Flask Server Name: %s" % self.app.config.get("FLASK_SERVER_NAME", "Not set, \
-                                                                                               using 0.0.0.0:5000"))
-        self.web.flask.run(host=str(self.app.config.get("FLASK_HOST", "0.0.0.0")),
-                           port=int(self.app.config.get("FLASK_PORT", 5000)),
+        host = str(self.app.config.get("FLASK_HOST", "127.0.0.1"))
+        port = int(self.app.config.get("FLASK_PORT", 5000))
+        server_name = str(self.app.config.get("FLASK_SERVER_NAME", "%s:%s" % ("127.0.0.1", port)))
+        self.web.flask.config.SERVER_NAME = server_name
+
+        self.log.info("Flask Server Name: %s" % self.web.flask.config["SERVER_NAME"])
+        self.web.flask.run(host=host,
+                           port=port,
                            debug=bool(self.app.config.get("FLASK_DEBUG", True)))
 
     def __test_view(self):
