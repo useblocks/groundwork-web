@@ -21,6 +21,7 @@ setup(
     description="Package for hosting groundwork apps and plugins like groundwork_web_app or groundwork_web_plugin.",
     long_description=__doc__,
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+    package_data={'': ['*.html']},
     include_package_data=True,
     platforms='any',
     install_requires=['groundwork-database', 'groundwork',
