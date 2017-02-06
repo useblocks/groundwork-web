@@ -29,10 +29,10 @@ setup(
                       'pytest-runner', 'sphinx', 'docutils'],
     tests_require=['pytest', 'pytest-flake8'],
     classifiers=[
-        'Development Status :: 4 - Beta'
+        'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Environment :: Web Environment',
-        'Environment :: Plugins'
+        'Environment :: Plugins',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
