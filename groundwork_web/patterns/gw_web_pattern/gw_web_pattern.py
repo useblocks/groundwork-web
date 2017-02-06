@@ -14,7 +14,7 @@ from groundwork_web.patterns.gw_web_pattern.menu import MenuApplication, MenuPlu
 class GwWebPattern(GwBasePattern):
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(GwWebPattern, self).__init__(*args, **kwargs)
         if not hasattr(self.app, "web"):
             self.app.web = WebApplication(self.app)
 

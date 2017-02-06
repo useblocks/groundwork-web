@@ -14,7 +14,7 @@ class GwWebDbRestPattern(GwWebPattern, GwSqlPattern):
     """
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(GwWebDbRestPattern, self).__init__(*args, **kwargs)
         if not hasattr(self.app.web, "rest"):
             self.app.web.rest = WebRestApplication(self.app)
 

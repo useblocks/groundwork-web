@@ -17,7 +17,7 @@ def _create_user_class(Base):
 class WebDatabasePlugin(GwWebDbAdminPattern):
     def __init__(self, *args, **kwargs):
         self.name = kwargs.get("name", self.__class__.__name__)
-        super().__init__(*args, **kwargs)
+        super(WebDatabasePlugin, self).__init__(*args, **kwargs)
 
         my_db = self.databases.register("main", "sqlite://", "main test database")
         User = _create_user_class(my_db.Base)

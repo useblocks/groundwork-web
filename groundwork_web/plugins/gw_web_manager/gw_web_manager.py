@@ -12,7 +12,7 @@ class GwWebManager(GwWebPattern):
     def __init__(self, *args, **kwargs):
         self.name = kwargs.get("name", self.__class__.__name__)
         self.needed_plugins = ["GwWeb"]
-        super().__init__(*args, **kwargs)
+        super(GwWebManager, self).__init__(*args, **kwargs)
 
     def activate(self):
         template_folder = os.path.join(os.path.abspath(os.path.dirname(__file__)), "templates")

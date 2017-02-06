@@ -15,7 +15,7 @@ class GwWebDbAdminPattern(GwWebPattern, GwSqlPattern):
     """
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(GwWebDbAdminPattern, self).__init__(*args, **kwargs)
         if not hasattr(self.app.web, "db"):
             self.app.web.db = WebDatabaseApplication(self.app)
 
