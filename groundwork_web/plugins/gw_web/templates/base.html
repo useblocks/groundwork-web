@@ -53,7 +53,11 @@
                     {%  for name, menu in get_menu()|dictsort %}
 {#                    {%  for name, menu in get_menu().items() %}#}
                         {% if menu.sub_menus|length == 0 %}
+                            {% if menu.func is none %}
                             <li><a href="{{ menu.link }}">{{ menu.link_text }}</a></li>
+                            {% else %}
+                            {{ menu.func()|safe }}
+                            {% endif %}
                         {% else %}
                         <li class="dropdown">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"

@@ -8,8 +8,8 @@ class MenuPlugin:
         self.log = plugin.log
         self.app = plugin.app
 
-    def register(self, name, link, icon=None, description=None, link_text=None, cluster="base", menu=None):
-        return self.app.web.menus.register(name, link, self.plugin, icon, description, link_text, cluster, menu)
+    def register(self, name, link, icon=None, description=None, link_text=None, cluster="base", menu=None, func=None):
+        return self.app.web.menus.register(name, link, self.plugin, icon, description, link_text, cluster, menu, func)
 
     def get(self, name=None, plugin=None, cluster="base"):
         return self.app.web.menus.get(name, plugin, cluster)
@@ -21,10 +21,11 @@ class MenuApplication:
         self.app = app
         self._menus = {"base": {}}
 
-    def register(self, name, link, plugin, icon=None, description=None, link_text=None, cluster="base", menu=None):
+    def register(self, name, link, plugin, icon=None, description=None, link_text=None, cluster="base", menu=None,
+                 func=None):
 
         if menu is not None:
-            return menu.register(name, link, plugin, icon, description, link_text)
+            return menu.register(name, link, plugin, icon, description, link_text, func)
 
         if cluster not in self._menus.keys():
             self._menus[cluster] = {}
@@ -32,7 +33,7 @@ class MenuApplication:
         if name in self._menus[cluster].keys():
             raise NameError("menu %s already exists in cluster %s" % (name, cluster))
 
-        self._menus[cluster][name] = Menu(name, link, plugin, icon, description, link_text)
+        self._menus[cluster][name] = Menu(name, link, plugin, icon, description, link_text, func)
         return self._menus[cluster][name]
 
     def get(self, name=None, plugin=None, cluster="base"):
@@ -48,11 +49,12 @@ class MenuApplication:
 class Menu:
     """
     """
-    def __init__(self, name, link, plugin, icon=None, description=None, link_text=None):
+    def __init__(self, name, link, plugin, icon=None, description=None, link_text=None, func=None):
         self.name = name
         self.link = link
         self.icon = icon
         self.description = description
+        self.func = func
         self.plugin = plugin
 
         if link_text is None:

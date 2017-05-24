@@ -1,6 +1,7 @@
 import os
 import logging
 from flask import Flask, render_template
+from flask_babel import Babel
 from docutils.core import publish_parts
 
 from groundwork.patterns import GwBasePattern
@@ -63,6 +64,7 @@ class WebApplication:
         self.app = app
         self.log = logging.getLogger(__name__)
         self.flask = None
+        self.flask_babel = None
 
         self.servers = ServerManagerApplication(app)
         self.contexts = ContextManagerApplication(app)
@@ -71,7 +73,7 @@ class WebApplication:
 
     def init_flask(self):
         """
-        Initialises and configures flask, is not already done,.
+        Initialises and configures flask, if not already done.
         :return: None
         """
         if self.flask is None:
@@ -87,6 +89,9 @@ class WebApplication:
             self.flask.jinja_env.globals.update(get_config=self.app.config.get)
             self.flask.jinja_env.globals.update(rst2html=self.__rst2html)
 
+            # Adds {%break/continue %} statement to jinja
+            self.flask.jinja_env.add_extension('jinja2.ext.loopcontrols')
+
             # Lets set the secret key for flask. This should be set in configuration files, so that
             # signed cookies are still valid if the server got restarted.
             # If there is no such parameter available, we create a temporary key, which is only
@@ -95,6 +100,10 @@ class WebApplication:
 
             self.flask.config["SERVER_NAME"] = self.app.config.get("FLASK_SERVER_NAME", "127.0.0.1:5000")
             self.log.info("Using FLASK_SERVER_NAME=%s" % self.flask.config.get("SERVER_NAME"))
+
+            # Load flask extensions
+            self.flask_babel = Babel(self.flask)
+
 
     def __get_menu(self, cluster="base"):
         return self.menus.get(cluster=cluster)
