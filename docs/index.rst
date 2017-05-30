@@ -28,8 +28,6 @@ Welcome to groundwork web
 
 groundwork-web provides web app management functions to applications based on the framework `groundwork`_.
 
-This package contains the following applications, plugins or patterns:
-
 .. sidebar:: groundwork framework
 
    `groundwork`_ is a plugin based Python application framework, which can be used to create various types of applications:
@@ -37,6 +35,24 @@ This package contains the following applications, plugins or patterns:
 
    Visit `groundwork.useblocks.com <http://groundwork.useblocks.com>`_
    or read the `technical documentation <https://groundwork.readthedocs.io>`_ for more information.
+
+It provides the management of the following objects:
+
+* **Routes**: Define URLs and map functions for rendering froms, templates and more.
+* **Contexts**: Group routes and use common folders and configurations.
+* **Menus**: Define menus and sub-menus for webpages
+* **Servers**: Register own server configurations for easy and fast starts.
+* **Database Table Views**: Register database tables to get generated views for editing database content via web forms.
+* **Database Table REST Views** Get access to database table content via a REST API.
+
+Besides this, the integrated plugins provides functions for:
+
+* starting a ready-to-use **flask-debug server**
+* using a **bootstrap-based template** with integrated menus
+* getting web views of detailed information about registered **groundwork objects** like plugins, commands,
+  signals, routes and more.
+
+This package contains the following applications, plugins or patterns:
 
 Applications
 ------------
