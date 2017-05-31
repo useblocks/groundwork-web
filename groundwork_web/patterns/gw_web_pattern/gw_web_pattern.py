@@ -104,7 +104,6 @@ class WebApplication:
             # Load flask extensions
             self.flask_babel = Babel(self.flask)
 
-
     def __get_menu(self, cluster="base"):
         return self.menus.get(cluster=cluster)
 
