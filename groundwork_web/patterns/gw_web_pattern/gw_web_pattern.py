@@ -110,6 +110,10 @@ class WebApplication:
             # available during server runtime.
             self.flask.secret_key = self.app.config.get("FLASK_SECRET_KEY", os.urandom(24))
 
+            for key, value in self.app.config.__dict__.items():
+                if key.startswith("FLASK_"):
+                    self.flask.config[key[6:]] = value
+
             self.flask.config["SERVER_NAME"] = self.app.config.get("FLASK_SERVER_NAME", "127.0.0.1:5000")
             self.log.info("Using FLASK_SERVER_NAME=%s" % self.flask.config.get("SERVER_NAME"))
 
