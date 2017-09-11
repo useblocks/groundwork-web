@@ -1,2 +1,3 @@
 gitpython
 groundwork
+groundwork-sphinx-theme

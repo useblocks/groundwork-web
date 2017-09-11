@@ -35,10 +35,11 @@ class WebPlugin:
         self.routes = RouteManagerPlugin(plugin)
         self.menus = MenuPlugin(plugin)
 
-        self.plugin.signals.connect(receiver="%s_flask_activation" % self.plugin.name,
+        self.plugin.signals.connect(receiver="%s_gw_web_activation" % self.plugin.name,
                                     signal="plugin_activate_pre",
-                                    function=self.__init_flask,
-                                    description="Initialised flask during plugin activation of %s" % self.plugin.name,
+                                    function=self.__activate_gw_web,
+                                    description="Initialised gw_web (flask) during plugin activation "
+                                                "of %s" % self.plugin.name,
                                     sender=self.plugin)
 
     @property
@@ -49,8 +50,16 @@ class WebPlugin:
     def flask(self, value):
         self.app.web.flask = value
 
-    def __init_flask(self, plugin, *args, **kwargs):
+    def __activate_gw_web(self, plugin, *args, **kwargs):
         self.app.web.init_flask()
+        # We need to send "gw_web_loaded" every time a plugin got activated with inherited GwWebPattern.
+        # We can not send it only once during the "real/final" flask initialisation, because a plugin may be loaded
+        # later and was not able to register a receiver for "gw_web_loaded" before
+        # the "real/final" flask init execution.
+        # So "gw_web_loaded" indicates that gw_web is ready for usage. Even if it was called x times.
+        # The plugin, which has registered a receiver, is responsible for not executing related code each time
+        # "gw_web_loaded" is send.
+        self.app.signals.send("gw_web_loaded", self.app)
 
     def render(self, template, plugin=None, **kwargs):
         if plugin is None:
@@ -70,6 +79,9 @@ class WebApplication:
         self.contexts = ContextManagerApplication(app)
         self.routes = RouteManagerApplication(app)
         self.menus = MenuApplication(app)
+
+        self.app.signals.register("gw_web_loaded", self.app, "Indicates that gw_web (incl. flask) was loaded correctly"
+                                                             "Mostly used to load other flask extensions after this.")
 
     def init_flask(self):
         """
