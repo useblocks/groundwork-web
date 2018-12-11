@@ -29,7 +29,7 @@ class GwWeb(GwWebPattern, GwCommandsPattern):
                                    description="web context, which was created by GwWeb as initial context")
 
         if self.app.config.get("SHOW_WEB_TEST_PAGE", True):
-            self.web.routes.register("/test", ["GET"], self.__test_view,
+            self.web.routes.register("/test", ["GET"], endpoint=self.__test_view,
                                      name="Test", description="Test view of GwWeb")
 
         # Register the flask debug server.

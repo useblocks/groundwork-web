@@ -22,10 +22,10 @@ class ContextManagerApplication:
         self.log = logging.getLogger(__name__)
         self.default_context = None
 
-    def register(self, name, template_folder, static_folder, url_prefix, description, plugin):
+    def register(self, name, template_folder, static_folder, url_prefix, description, plugin, blueprint=None):
         if name not in self._contexts.keys():
             self._contexts[name] = Context(name, template_folder, static_folder, url_prefix, description, plugin,
-                                           self.app)
+                                           self.app, blueprint=blueprint)
             if name == self.app.config.get("DEFAULT_CONTEXT", None) or self.default_context is None:
                 self.default_context = self._contexts[name]
         else:
@@ -52,7 +52,18 @@ class Context:
     They are similar to flask blueprint concept.
     """
 
-    def __init__(self, name, template_folder, static_folder, url_prefix, description, plugin, app):
+    def __init__(self, name, template_folder, static_folder, url_prefix, description, plugin, app, blueprint=None):
+        """
+        
+        :param name:
+        :param template_folder:
+        :param static_folder:
+        :param url_prefix:
+        :param description:
+        :param plugin:
+        :param app:
+        :param blueprint: Optional, if not given a new flask blueprint gets created
+        """
         self.name = name
         self.template_folder = template_folder
         self.static_folder = static_folder
@@ -63,12 +74,13 @@ class Context:
         self.app = app
         self.log = logging.getLogger(__name__)
 
-        self.blueprint = Blueprint(name, __name__,
-                                   url_prefix=url_prefix,
-                                   subdomain=None,
-                                   template_folder=template_folder,
-                                   static_folder=static_folder,
-                                   static_url_path=self.static_url_path)
-        self.app.web.flask.register_blueprint(self.blueprint)
+        if blueprint is None:
+            self.blueprint = Blueprint(name, __name__,
+                                       url_prefix=url_prefix,
+                                       subdomain=None,
+                                       template_folder=template_folder,
+                                       static_folder=static_folder,
+                                       static_url_path=self.static_url_path)
+            self.app.web.flask.register_blueprint(self.blueprint)
 
         self.log.debug("Context registered: %s (%s) for plugin %s" % (self.name, self.url_prefix, self.plugin.name))
