@@ -54,7 +54,7 @@ class Context:
 
     def __init__(self, name, template_folder, static_folder, url_prefix, description, plugin, app, blueprint=None):
         """
-        
+
         :param name:
         :param template_folder:
         :param static_folder:
