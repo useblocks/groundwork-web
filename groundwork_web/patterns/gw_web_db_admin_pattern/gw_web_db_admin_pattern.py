@@ -84,7 +84,8 @@ class WebDatabaseApplication:
 
         # After flask_admin initialisation, a first view/route got already registered.
         # We need to register this context as groundwork context as well.
-        if self.app.web.contexts.get('admin') is None:
+        context = self.app.web.contexts.get('admin', None)
+        if context is None:
             blueprint = self.flask_admin._views[0].blueprint
             if blueprint is not None:
                 context = self.app.web.contexts.register(name='admin',
@@ -94,7 +95,7 @@ class WebDatabaseApplication:
                                                          description='Admin panel context',
                                                          plugin=plugin,
                                                          blueprint=blueprint)
-
+        
         url = "admin_%s" % db_clazz.__name__.lower()
         self.flask_admin.add_view(ModelView(db_clazz, db_session, endpoint=url))
 
@@ -113,11 +114,10 @@ class WebDatabaseApplication:
         routes = get_routes(self.app.web.flask, url, context)
         for route in routes:
             self.app.web.routes.register(route['url'],
-                                         route['methods'],
                                          plugin,
+                                         methods=route['methods'],
                                          name=route['name'],
-                                         context=route['context'],
-                                         parameters=route['parameters'])
+                                         context=route['context'])
 
         return url
 

@@ -53,13 +53,15 @@ def test_web_routes(basicApp, WebPlugin):
     plugin = WebPlugin(basicApp)
     plugin.activate()
 
-    plugin.web.routes.register("/", ["GET", "POST"], _view, name="test_route", description="test route")
+    plugin.web.routes.register("/", _view, name="test_route", description="test route", methods=["GET", "POST"])
 
     route = plugin.app.web.routes.get("test_route")
 
     assert route is not None
     assert route.url == "/"
-    assert route.methods == ["GET", "POST"]
+    assert len(route.methods) == 2
+    for method in route.methods:
+        assert method.name in ['GET', 'POST']
     assert route.endpoint == _view
     assert route.context == plugin.app.web.contexts.default_context
     assert route.name == "test_route"

@@ -10,7 +10,6 @@
             <th>Name</th>
             <th>URL</th>
             <th>Methods</th>
-            <th>Parameters</th>
             <th>Context</th>
             <th>Plugin</th>
             <th>Endpoint</th>
@@ -24,14 +23,15 @@
         {% set prefix="" -%}
     {% endif -%}
     <tr>
-        <td>{{route.name}}</td>
+        <td>
+            <a href="{{ url_for('.__route_detail_view', name=route.name) }}">
+                {{route.name}}
+            </a>
+        </td>
         <td><a href="{{ prefix }}{{route.url}}">
             {{ prefix }}{{route.url}}
         </a></td>
         <td>{{route.methods}}</td>
-        <td>{{route.parameters.keys()|list}}
-
-        </td>
         <td>
             <a href="{{url_for('webmanager.__context_view')}}">
                 {{route.context.name}}

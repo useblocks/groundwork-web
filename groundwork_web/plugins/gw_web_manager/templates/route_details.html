@@ -2,8 +2,113 @@
 
 {% block content %}
 
-<h1>Route details</h1>
+<h1>Route details {{ route.name }}</h1>
+<table class="table table-striped">
+    <tbody>
+        <tr>
+            <th>Name</th>
+            <td>{{route.name}}</td>
+        </tr>
+        <tr>
+            <th>URL</th>
+            <td>
+                without prefix: {{route.url}} <br/>
+                with prefix:
+                <a href="{{route.context.url_prefix}}{{route.url}}">
+                    {{route.context.url_prefix}}{{route.url}}
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ route.description}}</td>
+        </tr>
+        <tr>
+            <th>Context</th>
+            <td>{{route.context.name}}</td>
+        </tr>
+        <tr>
+            <th>Plugin</th>
+            <td>
+                <a href="{{url_for('webmanager.__plugin_detail_view', plugin_name=route.plugin.name)}}">
+                    {{route.plugin.name }}
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <th>Endpoint</th>
+            <td>
+            <a href="{{url_for('webmanager.__context_view')}}">
+                {{route.context.name}}
+            </a>
+        </td>
+        </tr>
+    </tbody>
+</table>
 
-
+<h2>Methods</h2>
+    {% for key, method in route.methods.items() %}
+    <h3>{{ method.name}}</h3>
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{method.name}}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{method.description}}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    {% for param in method.parameters %}
+                    <h4>{{param.name}}</h4>
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th>Name</th>
+                                <td>{{param.name}}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>{{param.description}}</td>
+                            </tr>
+                            <tr>
+                                <th>Path type</th>
+                                <td>{{param.path_type}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {%  endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th>Responses</th>
+                <td>
+                    {% for response in method.responses %}
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th>Name</th>
+                                <td>{{response.name}}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>{{response.description}}</td>
+                            </tr>
+                            <tr>
+                                <th>Content</th>
+                                <td>{{response.content}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {%  endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    {% endfor %}
 
 {% endblock %}
+

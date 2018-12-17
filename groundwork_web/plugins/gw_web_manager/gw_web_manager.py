@@ -25,44 +25,48 @@ class GwWebManager(GwWebPattern):
 
         # Pure groundwork objects
 
-        self.web.routes.register("/", ["GET"], self.__manager_view, context="webmanager",
+        self.web.routes.register("/", methods=["GET"], endpoint=self.__manager_view, context="webmanager",
                                  name="manager_view", description="Entry-Page for the webmanager")
 
-        self.web.routes.register("/command", ["GET"], self.__command_view, context="webmanager",
+        self.web.routes.register("/command", methods=["GET"], endpoint=self.__command_view, context="webmanager",
                                  name="command_list", description="Lists all registered commands")
 
-        self.web.routes.register("/plugin", ["GET"], self.__plugin_view, context="webmanager",
+        self.web.routes.register("/plugin", methods=["GET"], endpoint=self.__plugin_view, context="webmanager",
                                  name="plugin_list", description="Lists all registered plugins")
 
-        self.web.routes.register("/plugin/class/<clazz>", ["GET", "POST"], self.__plugin_class_view,
+        self.web.routes.register("/plugin/class/<clazz>", methods=["GET", "POST"], endpoint=self.__plugin_class_view,
                                  context="webmanager",
                                  name="plugin_class_details", description="Shows details of a plugin class")
 
-        self.web.routes.register("/plugin/instance/<plugin_name>", ["GET", "POST"], self.__plugin_detail_view,
+        self.web.routes.register("/plugin/instance/<plugin_name>", methods=["GET", "POST"],
+                                 endpoint=self.__plugin_detail_view,
                                  context="webmanager",
                                  name="plugin_details", description="Shows details of a plugin instance")
 
-        self.web.routes.register("/signal", ["GET"], self.__signal_view, context="webmanager",
+        self.web.routes.register("/signal", methods=["GET"], endpoint=self.__signal_view, context="webmanager",
                                  name="signal_list", description="Lists all registered signals")
 
-        self.web.routes.register("/receiver", ["GET"], self.__receiver_view, context="webmanager",
+        self.web.routes.register("/receiver", methods=["GET"], endpoint=self.__receiver_view, context="webmanager",
                                  name="receiver_list", description="Lists all registered receivers")
 
-        self.web.routes.register("/document", ["GET"], self.__document_view, context="webmanager",
+        self.web.routes.register("/document", methods=["GET"], endpoint=self.__document_view, context="webmanager",
                                  name="document_list", description="Lists all registered documents")
 
         # WEB objects
 
-        self.web.routes.register("/route", ["GET"], self.__route_view, context="webmanager",
+        self.web.routes.register("/route", methods=["GET"], endpoint=self.__route_view, context="webmanager",
                                  name="route_list", description="Lists all registered routes")
-
-        self.web.routes.register("/menu", ["GET"], self.__menu_view, context="webmanager",
+        self.web.routes.register("/route/<name>", methods=["GET"], endpoint=self.__route_detail_view,
+                                 context="webmanager",
+                                 name="route_detail", description="Details of a registered route")
+        
+        self.web.routes.register("/menu", methods=["GET"], endpoint=self.__menu_view, context="webmanager",
                                  name="menu_list", description="Lists all registered menus")
 
-        self.web.routes.register("/context", ["GET"], self.__context_view, context="webmanager",
+        self.web.routes.register("/context", methods=["GET"], endpoint=self.__context_view, context="webmanager",
                                  name="context_list", description="Lists all registered contexts")
 
-        self.web.routes.register("/server", ["GET"], self.__server_view, context="webmanager",
+        self.web.routes.register("/server", methods=["GET"], endpoint=self.__server_view, context="webmanager",
                                  name="server_list", description="Lists all registered servers")
 
         with self.app.web.flask.app_context():
@@ -127,6 +131,10 @@ class GwWebManager(GwWebPattern):
     def __route_view(self):
         routes = self.app.web.routes.get()
         return self.web.render("routes.html", routes=routes)
+    
+    def __route_detail_view(self, name):
+        route = self.app.web.routes.get(name)
+        return self.web.render("route_details.html", route=route)
 
     def __context_view(self):
         contexts = self.app.web.contexts.get()
