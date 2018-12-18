@@ -84,8 +84,6 @@ class WebRestApplication:
         blueprint = self.app.web.flask.blueprints[collection_name + 'api0']
         context = self.app.web.contexts.get('api', None)
         if blueprint is not None and context is None:
-            blueprint.after_request(self._add_cors_header)
-            
             context = self.app.web.contexts.register(name='api',
                                                      template_folder=blueprint.template_folder,
                                                      static_folder=blueprint.static_folder,
@@ -112,11 +110,3 @@ class WebRestApplication:
     
     def unregister(self):
         pass
-
-    def _add_cors_header(self, response):
-        response.headers['Access-Control-Allow-Origin'] = 'http://partner.xcvbbn.ru'
-        response.headers['Access-Control-Allow-Methods'] = 'HEAD, GET, POST, PATCH, PUT, OPTIONS, DELETE'
-        response.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
-        response.headers['Access-Control-Allow-Credentials'] = 'true'
-    
-        return response

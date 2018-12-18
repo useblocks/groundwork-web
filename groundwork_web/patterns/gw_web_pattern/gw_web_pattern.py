@@ -2,6 +2,7 @@ import os
 import logging
 from flask import Flask, render_template
 from flask_babel import Babel
+from flask_cors import CORS
 from docutils.core import publish_parts
 
 from groundwork.patterns import GwBasePattern
@@ -119,6 +120,9 @@ class WebApplication:
 
             # Load flask extensions
             self.flask_babel = Babel(self.flask)
+            
+            # Load flask cors support
+            CORS(self.flask)
 
     def __get_menu(self, cluster="base"):
         return self.menus.get(cluster=cluster)
