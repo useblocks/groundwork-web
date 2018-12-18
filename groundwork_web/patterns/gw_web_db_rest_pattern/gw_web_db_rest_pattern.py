@@ -75,7 +75,7 @@ class WebRestApplication:
             self.flask_restless = APIManager(self.app.web.flask, session=db_session)
         
         if methods is None:
-            methods = ["GET", "POST", "DELETE"]
+            methods = ["GET", "POST", "DELETE", "PATCH", "PUT"]
         
         if collection_name is None:
             collection_name = db_clazz.__name__.lower()
