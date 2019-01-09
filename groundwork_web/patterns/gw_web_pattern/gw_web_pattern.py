@@ -120,7 +120,7 @@ class WebApplication:
 
             # Load flask extensions
             self.flask_babel = Babel(self.flask)
-            
+
             # Load flask cors support
             CORS(self.flask)
 

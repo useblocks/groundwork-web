@@ -59,7 +59,7 @@ class GwWebManager(GwWebPattern):
         self.web.routes.register("/route/<name>", methods=["GET"], endpoint=self.__route_detail_view,
                                  context="webmanager",
                                  name="route_detail", description="Details of a registered route")
-        
+
         self.web.routes.register("/menu", methods=["GET"], endpoint=self.__menu_view, context="webmanager",
                                  name="menu_list", description="Lists all registered menus")
 
@@ -131,7 +131,7 @@ class GwWebManager(GwWebPattern):
     def __route_view(self):
         routes = self.app.web.routes.get()
         return self.web.render("routes.html", routes=routes)
-    
+
     def __route_detail_view(self, name):
         route = self.app.web.routes.get(name)
         return self.web.render("route_details.html", route=route)

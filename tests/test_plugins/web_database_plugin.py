@@ -31,6 +31,6 @@ class WebDatabasePlugin(GwWebDbAdminPattern, GwWebDbRestPattern):
 
         self.web.db.register(my_User.clazz, session)
         self.web.rest.register(my_User.clazz, session)
-        
+
     def deactivate(self):
         pass

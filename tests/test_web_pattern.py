@@ -61,7 +61,7 @@ def test_web_routes(basicApp, WebPlugin):
     assert route.url == "/"
     assert len(route.methods) == 2
     for method in route.methods:
-        assert method.name in ['GET', 'POST']
+        assert method in ['GET', 'POST']
     assert route.endpoint == _view
     assert route.context == plugin.app.web.contexts.default_context
     assert route.name == "test_route"

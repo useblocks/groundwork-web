@@ -17,10 +17,10 @@ class GwWebDoc(GwWebDocPattern):
                 'app_name': "Test application"
             },
         )
-    
+
         # Register blueprint at URL
         # (URL must match the one given to factory function above)
         self.app.web.flask.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
-    
+
     def deactivate(self):
         pass

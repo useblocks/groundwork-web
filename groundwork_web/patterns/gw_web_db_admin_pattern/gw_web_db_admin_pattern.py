@@ -95,9 +95,9 @@ class WebDatabaseApplication:
                                                          description='Admin panel context',
                                                          plugin=plugin,
                                                          blueprint=blueprint)
-        
+
         url = "admin_%s" % db_clazz.__name__.lower()
-        self.flask_admin.add_view(ModelView(db_clazz, db_session, endpoint=url))
+        self.flask_admin.add_view(GroundworkModelView(db_clazz, db_session, endpoint=url))
 
         # for view in self.flask_admin._views:
         #     if view.endpoint == url:
@@ -127,3 +127,16 @@ class WebDatabaseApplication:
     def get(self):
         # REALLY needed?
         pass
+
+
+class GroundworkModelView(ModelView):
+    """
+    Own ModelView for flask-admin, which defines some specific configuration for:
+
+    * Showing primary key on list views
+
+    """
+    column_display_pk = True
+
+    def __init__(self, *args, **kwargs):
+        super(GroundworkModelView, self).__init__(*args, **kwargs)
