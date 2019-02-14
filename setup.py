@@ -26,7 +26,7 @@ setup(
     platforms='any',
     install_requires=['groundwork-database>=0.1.4', 'groundwork>=0.1.14',
                       'Flask>0.10.1', 'Flask-Admin', 'Flask-Restless', 'Flask-Babel',
-                      'pytest-runner', 'sphinx', 'docutils', 'flask-swagger-ui', 'flask-cors'],
+                      'sphinx', 'docutils', 'flask-swagger-ui', 'flask-cors'],
     tests_require=['pytest', 'pytest-flake8'],
     classifiers=[
         'Development Status :: 4 - Beta',
